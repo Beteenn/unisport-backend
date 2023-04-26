@@ -1,37 +1,42 @@
 using IoC;
 using IoC.Configuration;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using WebAPI.Filters;
+using WebAPI.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration
-	.SetBasePath(builder.Environment.ContentRootPath)
-	.AddJsonFile("appsettings.json", true, true)
-	.AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true, true)
-	.AddEnvironmentVariables();
+    .SetBasePath(builder.Environment.ContentRootPath)
+    .AddJsonFile("appsettings.json", true, true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true, true)
+    .AddEnvironmentVariables();
 
 // Add services to the container.
 
 builder.Services.AddControllers(options =>
 {
-	options.Conventions.Add(new RouteTokenTransformerConvention(new LowerCaseParameterTransformer()));
-	options.Filters.Add(new ExceptionHandlerActionFilter());
+    options.Conventions.Add(new RouteTokenTransformerConvention(new LowerCaseParameterTransformer()));
+    options.Filters.Add(new ExceptionHandlerActionFilter());
 }).AddJsonOptions(options =>
 {
-	options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-	options.JsonSerializerOptions.WriteIndented = true;
-	options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
-	options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+    options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+    options.JsonSerializerOptions.WriteIndented = true;
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
 })
 .AddNewtonsoftJson(options =>
-	options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
 
 // Setting DBContexts
 builder.Services.ConfigureEF(builder.Configuration.GetConnectionString("connection"));
+
+builder.Services.TryAddScoped<IAuthMiddleware, AuthMiddleware>();
+builder.Services.AddMvc(opt => opt.Filters.Add<JwtAuthorizeAttribute>());
 
 // Setting Identity
 builder.Services.ConfigureIdentityAuthentication();
@@ -45,12 +50,12 @@ builder.Services.AddSwaggerConfiguration(builder.Environment.EnvironmentName);
 // Setting CORS
 builder.Services.AddCors(options =>
 {
-	options.AddPolicy("CorsPolicy",
-		builder => builder.SetIsOriginAllowed((host) => true)
-		.AllowAnyMethod()
-		.AllowAnyHeader()
-		.AllowCredentials()
-		.WithExposedHeaders("Content-Disposition"));
+    options.AddPolicy("CorsPolicy",
+        builder => builder.SetIsOriginAllowed((host) => true)
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowCredentials()
+        .WithExposedHeaders("Content-Disposition"));
 });
 
 var app = builder.Build();
@@ -58,7 +63,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-	app.UseDeveloperExceptionPage();
+    app.UseDeveloperExceptionPage();
 }
 
 app.UseHttpsRedirection();
@@ -69,10 +74,12 @@ app.UseCors("CorsPolicy");
 
 app.UseSwagger().UseSwaggerUI(c =>
 {
-	c.SwaggerEndpoint("v1/swagger.json", "IdentityServer API v1");
+    c.SwaggerEndpoint("v1/swagger.json", "IdentityServer API v1");
 });
 
 app.UseAuthorization();
+
+app.UseMiddleware<IAuthMiddleware>();
 
 app.MapControllers();
 

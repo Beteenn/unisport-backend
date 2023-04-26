@@ -1,26 +1,27 @@
-﻿using Application.Configuration.Identity.Interfaces;
+﻿using Application.AuxiliaryClasses;
+using Application.Configuration.Identity.Interfaces;
+using Application.ViewModels;
 using Domain.AggregateModels;
+using Infrastructure.Auth;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Services.Identity
 {
-	public class TokenService : ITokenService
-	{
+    public class TokenService : ITokenService
+    {
+        private IUsuarioPrincipal _usuarioPrincipal;
         private readonly string _tokenSecret;
         //private readonly IServicoCriptografia _servicoCriptografia;
 
-        public TokenService(IConfiguration configuration) //IServicoCriptografia servicoCriptografia)
+        public TokenService(IConfiguration configuration, IUsuarioPrincipal principal) //IServicoCriptografia servicoCriptografia)
         {
             _tokenSecret = configuration.GetSection("BearerSettings:Secret").Value;
             //_servicoCriptografia = servicoCriptografia;
+            _usuarioPrincipal = principal;
         }
 
         private Claim CriptografarClaim(string nome, string valor) //IServicoCriptografia servicoCriptografia)
@@ -34,6 +35,40 @@ namespace Application.Services.Identity
 
         private void AdicionarListaClaimsCriptografada(SecurityTokenDescriptor tokenDescriptor, string nome, List<string> valores)
             => tokenDescriptor.Subject.AddClaims(valores.Select(r => CriptografarClaim(nome, r)));//_servicoCriptografia)));
+
+        private UsuarioTokenViewModel DescriptografarTokenJWT(string token)
+        {
+            UsuarioTokenViewModel usuario = null;
+
+            if (string.IsNullOrEmpty(token)) return usuario;
+
+            try
+            {
+                var user = ObterUsuarioTokenJWT(token);
+                var dataCriacaoToken = DataCriacaoTokenJWT(token);
+                var dataExpiracaoToken = DataExpiracaoTokenJWT(token);
+
+                PreencheExpiracaoUsuarioPrincipal(dataExpiracaoToken);
+
+                if (user == null) return usuario;
+
+                usuario = new UsuarioTokenViewModel
+                {
+                    Id = user.Id,
+                    Email = user.Email,
+                    FaculdadeId = user.FaculdadeId,
+                    DataCriacao = dataCriacaoToken,
+                    DataExpiracao = dataExpiracaoToken,
+                    //Claims = user.Claims.Select(x => x.ClaimValue).ToList
+                };
+            }
+            catch (Exception ex)
+            {
+                //Logger.Error(ex);
+            }
+
+            return usuario;
+        }
 
         public DateTime DataCriacaoTokenJWT(string token)
         {
@@ -63,14 +98,16 @@ namespace Application.Services.Identity
             var jsonToken = tokenHandler.ReadToken(token);
             var jwtToken = jsonToken as JwtSecurityToken;
 
-            var idUsuario = DescriptografarClaim("id", jwtToken.Claims); //_servicoCriptografia);
-            var cpf = DescriptografarClaim("cpf", jwtToken.Claims); //_servicoCriptografia);
-            var perfilUsuario = DescriptografarClaim("role", jwtToken.Claims); //_servicoCriptografia);
+            var usuarioId = DescriptografarClaim("id", jwtToken.Claims); //_servicoCriptografia);
+            var email = DescriptografarClaim("email", jwtToken.Claims); //_servicoCriptografia);
+            var faculdadeId = DescriptografarClaim("faculdadeId", jwtToken.Claims); //_servicoCriptografia);
             //var claims = DescriptografarListaClaims("claims", jwtToken.Claims, _servicoCriptografia);
 
-            if (string.IsNullOrEmpty(idUsuario)) return usuario;
+            if (string.IsNullOrEmpty(usuarioId)) return usuario;
 
-            usuario = new Usuario(Convert.ToInt64(idUsuario), perfilUsuario);
+            usuario = new Usuario(long.Parse(usuarioId), email, long.Parse(faculdadeId));
+
+            PreencheUsuarioPrincipal(usuario, token);
 
             return usuario;
         }
@@ -84,6 +121,8 @@ namespace Application.Services.Identity
             {
                 Subject = new ClaimsIdentity(new[] {
                     CriptografarClaim("id", user.Id.ToString()), //_servicoCriptografia),
+                    CriptografarClaim("email", user.Email), //_servicoCriptografia),
+                    CriptografarClaim("faculdadeId", user.FaculdadeId.ToString()) //_servicoCriptografia),
                 }),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
                 Expires = DateTime.Now.AddMinutes(30),
@@ -100,5 +139,29 @@ namespace Application.Services.Identity
 
             return tokenHandler.WriteToken(token);
         }
+
+        private void PreencheUsuarioPrincipal(Usuario usuario, string token)
+        {
+            _usuarioPrincipal.SetId(usuario.Id);
+            _usuarioPrincipal.SetEmail(usuario.Email);
+            _usuarioPrincipal.SetFaculdadeId(usuario.FaculdadeId);
+            _usuarioPrincipal.AddRole(usuario.UserRoles?.FirstOrDefault().Name);
+            //_usuarioPrincipal.SetStatusToken(usuario.TokenExpirado);
+            //usuario.Claims.ForEach(x => _usuarioPrincipal.AddClaim(x));
+
+            var claimsidentity = new ClaimsIdentity(token);
+            _usuarioPrincipal.SetAuthenticated(claimsidentity);
+        }
+
+        public async Task<Result<UsuarioTokenViewModel>> ObterConteudoTokenJWT(string token)
+        {
+            UsuarioTokenViewModel usuarioVm = DescriptografarTokenJWT(token);
+
+            if (usuarioVm == null) return new Result<UsuarioTokenViewModel>().AdicionarMensagemErro("Token inválido");
+
+            return new Result<UsuarioTokenViewModel>(usuarioVm);
+        }
+
+        public void PreencheExpiracaoUsuarioPrincipal(DateTime dataExpiracaoToken) => _usuarioPrincipal.SetStatusTokenInvalido(dataExpiracaoToken > DateTime.Now);
     }
 }

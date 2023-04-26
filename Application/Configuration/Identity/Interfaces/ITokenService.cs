@@ -1,4 +1,6 @@
-﻿using Domain.AggregateModels;
+﻿using Application.AuxiliaryClasses;
+using Application.ViewModels;
+using Domain.AggregateModels;
 
 namespace Application.Configuration.Identity.Interfaces
 {
@@ -8,5 +10,6 @@ namespace Application.Configuration.Identity.Interfaces
         DateTime DataExpiracaoTokenJWT(string token);
         DateTime DataCriacaoTokenJWT(string token);
         string GerarToken(Usuario user);
+        Task<Result<UsuarioTokenViewModel>> ObterConteudoTokenJWT(string token);
     }
 }

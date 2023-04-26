@@ -2,6 +2,7 @@
 using Application.Services;
 using Application.Services.Identity;
 using Application.Services.Interfaces;
+using Infrastructure.Auth;
 using Infrastructure.Configuration;
 using Infrastructure.Configuration.Identity;
 using Infrastructure.Repository;
@@ -13,16 +14,11 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IoC
 {
-	public static class ApplicationModule
-	{
+    public static class ApplicationModule
+    {
         public static IServiceCollection ConfigureDependencies(this IServiceCollection services, IConfiguration configuration)
         {
             var mapperConfig = new AutoMapperConfig();
@@ -33,7 +29,7 @@ namespace IoC
             services.ConfigurarServicosIntegracao(configuration);
             services.ConfigurarServices();
             services.ConfigurarRepositorios();
-            services.ConfigurarAutenticacao();
+            services.ConfigurarAutenticacao(configuration);
             //services.ConfigurarEmailServices();
 
             return services;
@@ -53,11 +49,11 @@ namespace IoC
         }
 
         private static void ConfigureSettings(this IServiceCollection services, IConfiguration configuration)
-        {            
+        {
         }
 
         private static void ConfigurarServicosIntegracao(this IServiceCollection services, IConfiguration configuration)
-        {            
+        {
         }
         public static IServiceCollection ConfigureEF(this IServiceCollection services, string connectionString)
         {
@@ -72,9 +68,11 @@ namespace IoC
 
             return services;
         }
-        private static void ConfigurarAutenticacao(this IServiceCollection services)
+
+        private static void ConfigurarAutenticacao(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddTransient<ITokenService, TokenService>();
+            services.AddScoped<IUsuarioPrincipal, UsuarioPrincipal>();
+            services.AddTransient<ITokenService, TokenService>(x => new TokenService(configuration, x.GetRequiredService<IUsuarioPrincipal>()));
         }
 
         public static IServiceCollection ConfigureIdentityAuthentication(this IServiceCollection services)

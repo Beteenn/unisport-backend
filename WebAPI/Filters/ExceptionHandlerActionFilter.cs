@@ -7,9 +7,8 @@ namespace WebAPI.Filters
 {
 	public class ExceptionHandlerActionFilter : IExceptionFilter
 	{
-        public ExceptionHandlerActionFilter()
-        {
-        }
+        public ExceptionHandlerActionFilter() { }
+
         public void OnException(ExceptionContext context)
         {
             ErrorViewModel errorViewModel = new ErrorViewModel(context.Exception.Message);
