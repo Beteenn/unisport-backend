@@ -1,8 +1,6 @@
 ﻿using Application.DTO;
-using Application.Services;
 using Application.Services.Interfaces;
 using Application.ViewModels;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers

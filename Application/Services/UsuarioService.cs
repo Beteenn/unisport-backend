@@ -1,56 +1,72 @@
 ﻿using Application.AuxiliaryClasses;
+using Application.Configuration.Identity.Interfaces;
 using Application.DTO;
 using Application.Services.Interfaces;
+using Application.ViewModels;
 using Domain.AggregateModels;
-using Infrastructure.Configuration.Logger;
 using Infrastructure.Repository.Interfaces;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Services
 {
-	public class UsuarioService : IUsuarioService
+    public class UsuarioService : IUsuarioService
     {
+        private readonly ITokenService _tokenService;
+        private readonly IFaculdadeRepository _faculdadeRepository;
         private readonly IUsuarioRepository _usuarioRepository;
         //private readonly IIdentityServerLog _logger;
         private readonly UserManager<Usuario> _userManager;
 
         public UsuarioService(UserManager<Usuario> userManager, RoleManager<Perfil> roleManager, 
-            IUsuarioRepository usuarioRepository) //IIdentityServerLog logger)
+            IUsuarioRepository usuarioRepository, ITokenService tokenService, IFaculdadeRepository faculdadeRepository) //IIdentityServerLog logger)
         {
             _userManager = userManager;
             _usuarioRepository = usuarioRepository ?? throw new ArgumentNullException(nameof(usuarioRepository));
+            _faculdadeRepository = faculdadeRepository ?? throw new ArgumentNullException(nameof(faculdadeRepository));
+            _tokenService = tokenService ?? throw new ArgumentNullException(nameof(tokenService));
             //_logger = logger;
         }
 
         public async Task<Result> CadastrarUsuario(CadastroUsuarioDTO dto)
         {
-            //var cpfUsuario = PessoaFisica.CPFSemMascara(dto.PessoaFisica.CPF);
-            //var usuarioExistenteResult = await _usuarioRepository.ConsultaUsuarioPorCpf(cpfUsuario);
+            var usuarioExistente = await _usuarioRepository.ConsultaUsuarioPorEmail(dto.Email.ToLower());
 
-            //if (usuarioExistenteResult is not null)
-            //    return new Result().AdicionarMensagemErro("Usuario já cadastrado!");
+            if (usuarioExistente != null) { return new Result().AdicionarMensagemErro("Usuario já cadastrado!"); }
 
-            //var usuario = new Usuario(dto.Username, cpfUsuario, dto.PessoaFisica.Nome, 
-            //    dto.PessoaFisica.Email, dto.PessoaFisica.DataNascimento);
+            var dominioEmail = dto.Email.ToLower().Split('@')[1];
 
-            //IdentityResult result = null;
+            var faculdade = await _faculdadeRepository.ObterFaculdadePorDominioEmail(dominioEmail);
 
-            //if (string.IsNullOrEmpty(dto.Password))
-            //    result = await _userManager.CreateAsync(usuario);
-            //else
-            //    result = await _userManager.CreateAsync(usuario, dto.Password);
+            if (faculdade == null) { return new Result().AdicionarMensagemErro("Faculdade não encontrada."); }
 
-            //if (result.Succeeded)
-            //    return new Result();
+            var usuario = new Usuario(dto.Nome, dto.Sobrenome, dto.Email, faculdade.Id, dto.DataNascimento);
 
-            //return new Result().AdicionarMensagemErro(result.Errors.Select(x => x.Description));
+            IdentityResult result = null;
+
+            if (string.IsNullOrEmpty(dto.Password))
+                result = await _userManager.CreateAsync(usuario);
+            else
+                result = await _userManager.CreateAsync(usuario, dto.Password);
+
+            if (!result.Succeeded) { return new Result().AdicionarMensagemErro(result.Errors.Select(x => x.Description)); }
 
             return new Result();
+        }
+
+        public async Task<Result<LoginViewModel>> Login(LoginDTO loginDto)
+        {
+            var usuario = await _usuarioRepository.ConsultaUsuarioPorEmail(loginDto.email);
+
+            if (usuario == null) { return new Result<LoginViewModel>().AdicionarMensagemErro("Usúario ou senha inválidos."); }
+
+            if (!await _userManager.CheckPasswordAsync(usuario, loginDto.password))
+            {
+                return new Result<LoginViewModel>().AdicionarMensagemErro("Usúario ou senha inválidos.");
+            }
+
+            var token = _tokenService.GerarToken(usuario);
+
+            return new Result<LoginViewModel>(new LoginViewModel { Token = token });
         }
     }
 }

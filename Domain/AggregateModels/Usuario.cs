@@ -18,6 +18,23 @@ namespace Domain.AggregateModels
             Ativo = true;
         }
 
+        public Usuario(string nome, string sobrenome, string email, long faculdadeId, DateTime dataNascimento) : base()
+        {
+            UserName = $"{nome}.{sobrenome}";
+            Nome = nome;
+            Sobrenome = sobrenome;
+            Email = email;
+            FaculdadeId = faculdadeId;
+            DataNascimento = dataNascimento;
+        }
+
+        public Usuario(long id, string email, long faculdadeId) : base()
+        {
+            Id = id;
+            Email = email;
+            FaculdadeId = faculdadeId;
+        }
+
         public Usuario(long id, string perfil)
         {
             Id = id;

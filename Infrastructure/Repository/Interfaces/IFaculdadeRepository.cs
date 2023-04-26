@@ -7,5 +7,6 @@ namespace Infrastructure.Repository.Interfaces
         Task<IEnumerable<Faculdade>> ListarFaculdades();
         Task<Faculdade> ObterFaculdadePorId(long id);
         Task CadastrarFaculdade(Faculdade faculdade);
+        Task<Faculdade> ObterFaculdadePorDominioEmail(string dominioEmail);
     }
 }

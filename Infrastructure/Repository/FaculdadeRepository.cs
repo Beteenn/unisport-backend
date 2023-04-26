@@ -23,5 +23,10 @@ namespace Infrastructure.Repository
         {
             await _context.AddAsync(faculdade);
         }
+
+        public async Task<Faculdade> ObterFaculdadePorDominioEmail(string dominioEmail)
+        {
+            return await _context.Faculdade.FirstOrDefaultAsync(faculdade => faculdade.DominioEmail.Equals(dominioEmail));
+        }
     }
 }

@@ -1,13 +1,7 @@
 ﻿using Domain.AggregateModels;
 using Infrastructure.Configuration;
-using Infrastructure.Configuration.Logger;
 using Infrastructure.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Repository
 {
@@ -19,9 +13,14 @@ namespace Infrastructure.Repository
 
         }
 
-		public async Task CadastraUsuario(Usuario usuario, string password)
-		{
-			await _context.AddAsync(usuario);
-		}
+        public async Task CadastraUsuario(Usuario usuario, string password)
+        {
+            await _context.AddAsync(usuario);
+        }
+
+        public async Task<Usuario> ConsultaUsuarioPorEmail(string email)
+        {
+            return await _context.Usuario.FirstOrDefaultAsync(user => user.Email.Equals(email));
+        }
     }
 }
