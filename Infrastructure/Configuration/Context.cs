@@ -37,6 +37,8 @@ namespace Infrastructure.Configuration
 			
 			builder.ApplyConfiguration(new UsuarioMapping());
 			builder.ApplyConfiguration(new FaculdadeMapping());
+			builder.ApplyConfiguration(new EquipeMapping());
+			builder.ApplyConfiguration(new EquipeUsuarioMapping());
 		}
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -49,6 +51,8 @@ namespace Infrastructure.Configuration
         public DbSet<Perfil> Perfil { get; set; }
 		public DbSet<Usuario> Usuario { get; set; }
 		public DbSet<Faculdade> Faculdade { get; set; }
+		public DbSet<Equipe> Equipe { get; set; }
+		public DbSet<EquipeUsuario> EquipeUsuario { get; set; }
 
 		#endregion
 	}

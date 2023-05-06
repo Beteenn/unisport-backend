@@ -24,13 +24,11 @@ namespace IoC
             var mapperConfig = new AutoMapperConfig();
             services.AddSingleton(mapperConfig.Mapper);
 
-            //services.AddTransient<IMongoDbContext, MongoDbContext>();
             services.ConfigureSettings(configuration);
             services.ConfigurarServicosIntegracao(configuration);
             services.ConfigurarServices();
             services.ConfigurarRepositorios();
             services.ConfigurarAutenticacao(configuration);
-            //services.ConfigurarEmailServices();
 
             return services;
         }
@@ -39,6 +37,7 @@ namespace IoC
         {
             services.AddTransient<IUsuarioService, UsuarioService>();
             services.AddScoped<IFaculdadeService, FaculdadeService>();
+            services.AddScoped<IEquipeService, EquipeService>();
         }
 
         private static void ConfigurarRepositorios(this IServiceCollection services)
@@ -46,19 +45,21 @@ namespace IoC
             services.AddSingleton(typeof(IGenericsRepository<>), typeof(GenericsRepository<>));
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddScoped<IFaculdadeRepository, FaculdadeRepository>();
+            services.AddScoped<IEquipeRepository, EquipeRepository>();
         }
 
         private static void ConfigureSettings(this IServiceCollection services, IConfiguration configuration)
         {
+
         }
 
         private static void ConfigurarServicosIntegracao(this IServiceCollection services, IConfiguration configuration)
         {
+
         }
+
         public static IServiceCollection ConfigureEF(this IServiceCollection services, string connectionString)
         {
-            //services.InitializeEFConfiguration(connectionString);
-
             services.AddEntityFrameworkSqlServer()
                 .AddDbContext<Context>(options =>
                 {
@@ -82,6 +83,7 @@ namespace IoC
             return services;
         }
     }
+
     public class LowerCaseParameterTransformer : IOutboundParameterTransformer
     {
         public string TransformOutbound(object value)
