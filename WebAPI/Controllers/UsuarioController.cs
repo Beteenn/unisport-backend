@@ -16,9 +16,30 @@ namespace WebAPI.Controllers
             _usuarioService = usuarioService;
         }
 
+        [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<UsuarioViewModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> ListarUsuarios()
+        {
+            var result = await _usuarioService.ListarUsuarios();
+
+            return ResultadoRetorno(result);
+        }
+
+        [Route("faculdade/{faculdadeId}")]
+        [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<UsuarioViewModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> ListarUsuariosPorFaculdadeId(long faculdadeId)
+        {
+            var result = await _usuarioService.ListarUsuariosPorFaculdadeId(faculdadeId);
+
+            return ResultadoRetorno(result);
+        }
+
         [HttpPost]
-        [ProducesResponseType(typeof(IEnumerable<UsuarioViewModel>), StatusCodes.Status200OK),
-            ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CadastraUsuario(CadastroUsuarioDTO usuarioDTO)
         {
             var result = await _usuarioService.CadastrarUsuario(usuarioDTO);

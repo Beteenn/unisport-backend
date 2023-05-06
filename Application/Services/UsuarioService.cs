@@ -3,13 +3,14 @@ using Application.Configuration.Identity.Interfaces;
 using Application.DTO;
 using Application.Services.Interfaces;
 using Application.ViewModels;
+using AutoMapper;
 using Domain.AggregateModels;
 using Infrastructure.Repository.Interfaces;
 using Microsoft.AspNetCore.Identity;
 
 namespace Application.Services
 {
-    public class UsuarioService : IUsuarioService
+    public class UsuarioService : BaseService, IUsuarioService
     {
         private readonly ITokenService _tokenService;
         private readonly IFaculdadeRepository _faculdadeRepository;
@@ -18,7 +19,8 @@ namespace Application.Services
         private readonly UserManager<Usuario> _userManager;
 
         public UsuarioService(UserManager<Usuario> userManager, RoleManager<Perfil> roleManager, 
-            IUsuarioRepository usuarioRepository, ITokenService tokenService, IFaculdadeRepository faculdadeRepository) //IIdentityServerLog logger)
+            IUsuarioRepository usuarioRepository, ITokenService tokenService, IFaculdadeRepository faculdadeRepository,
+            IMapper mapper) : base(mapper) //IIdentityServerLog logger)
         {
             _userManager = userManager;
             _usuarioRepository = usuarioRepository ?? throw new ArgumentNullException(nameof(usuarioRepository));
@@ -67,6 +69,28 @@ namespace Application.Services
             var token = _tokenService.GerarToken(usuario);
 
             return new Result<LoginViewModel>(new LoginViewModel { Token = token });
+        }
+
+        public async Task<Result<IEnumerable<UsuarioListagemViewModel>>> ListarUsuarios()
+        {
+            var usuarios = await _usuarioRepository.ListarUsuarios();
+
+            if (!usuarios.Any()) { return new Result<IEnumerable<UsuarioListagemViewModel>>(); }
+
+            var usuariosVm = Mapper.Map<IEnumerable<UsuarioListagemViewModel>>(usuarios);
+
+            return new Result<IEnumerable<UsuarioListagemViewModel>>(usuariosVm);
+        }
+
+        public async Task<Result<IEnumerable<UsuarioListagemViewModel>>> ListarUsuariosPorFaculdadeId(long faculdadeId)
+        {
+            var usuarios = await _usuarioRepository.ListarUsuarioPorFaculdadeId(faculdadeId);
+
+            if (!usuarios.Any()) { return new Result<IEnumerable<UsuarioListagemViewModel>>(); }
+
+            var usuariosVm = Mapper.Map<IEnumerable<UsuarioListagemViewModel>>(usuarios);
+
+            return new Result<IEnumerable<UsuarioListagemViewModel>>(usuariosVm);
         }
     }
 }

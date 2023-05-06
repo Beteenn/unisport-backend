@@ -8,5 +8,7 @@ namespace Application.Services.Interfaces
 	{
 		Task<Result> CadastrarUsuario(CadastroUsuarioDTO cadastroUsuarioDTO);
         Task<Result<LoginViewModel>> Login(LoginDTO loginDto);
+        Task<Result<IEnumerable<UsuarioListagemViewModel>>> ListarUsuarios();
+        Task<Result<IEnumerable<UsuarioListagemViewModel>>> ListarUsuariosPorFaculdadeId(long faculdadeId);
     }
 }

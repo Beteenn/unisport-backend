@@ -5,11 +5,18 @@ using Domain.AggregateModels;
 namespace Application.Mapper
 {
     public class DomainToViewModelProfile : Profile
-	{
-		public DomainToViewModelProfile()
-		{
+    {
+        public DomainToViewModelProfile()
+        {
             CreateMap<Faculdade, FaculdadeViewModel>()
                 .ReverseMap();
+
+            CreateMap<Usuario, UsuarioViewModel>()
+                .ReverseMap();
+
+            CreateMap<Usuario, UsuarioListagemViewModel>()
+                .ForMember(dest => dest.NomeCompleto, opt => opt.MapFrom(src => $"{src.Nome} {src.Sobrenome}"))
+                .ReverseMap();
         }
-	}
+    }
 }
