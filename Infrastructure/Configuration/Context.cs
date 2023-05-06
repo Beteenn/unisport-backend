@@ -1,6 +1,8 @@
 ﻿using Domain.AggregateModels;
+using Domain.AggregateModels.CampeonatoModels;
 using Infrastructure.AuxiliaryClasses;
 using Infrastructure.DataAccess.Mapping;
+using Infrastructure.DataAccess.Mapping.CampeonatoMapping;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -39,6 +41,10 @@ namespace Infrastructure.Configuration
 			builder.ApplyConfiguration(new FaculdadeMapping());
 			builder.ApplyConfiguration(new EquipeMapping());
 			builder.ApplyConfiguration(new EquipeUsuarioMapping());
+			builder.ApplyConfiguration(new ModalidadeCampeonatoMapping());
+			builder.ApplyConfiguration(new StatusCampeonatoMapping());
+			builder.ApplyConfiguration(new TipoCampeonatoMapping());
+			builder.ApplyConfiguration(new CampeonatoMapping());
 		}
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -53,6 +59,8 @@ namespace Infrastructure.Configuration
 		public DbSet<Faculdade> Faculdade { get; set; }
 		public DbSet<Equipe> Equipe { get; set; }
 		public DbSet<EquipeUsuario> EquipeUsuario { get; set; }
+		public DbSet<TipoCampeonato> TipoCampeonato { get; set; }
+		public DbSet<ModalidadeCampeonato> ModalidadeCampeonato { get; set; }
 
 		#endregion
 	}
