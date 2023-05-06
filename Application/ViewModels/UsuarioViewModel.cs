@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Application.ViewModels
+﻿namespace Application.ViewModels
 {
-	public class UsuarioViewModel
+    public class UsuarioViewModel
 	{
-	}
+        public long Id { get; set; }
+        public string Nome { get; set; }
+        public long FaculdadeId { get; set; }
+    }
 }
