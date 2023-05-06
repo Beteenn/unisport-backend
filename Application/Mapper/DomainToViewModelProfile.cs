@@ -30,6 +30,9 @@ namespace Application.Mapper
 
             CreateMap<ModalidadeCampeonato, ModalidadeCampeonatoViewModel>()
                 .ReverseMap();
+
+            CreateMap<Campeonato, CampeonatoViewModel>()
+                .ReverseMap();
         }
     }
 }

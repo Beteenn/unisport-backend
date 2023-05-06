@@ -1,7 +1,6 @@
-﻿using Application.Services.Interfaces;
-using Application.ViewModels;
+﻿using Application.DTO.CampeonatosDTO;
+using Application.Services.Interfaces;
 using Application.ViewModels.CampeonatosVm;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -35,6 +34,38 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> ListarModalidadesCampeonato()
         {
             var result = await _campeonatoService.ListarModalidadesCampeonato();
+
+            return ResultadoRetorno(result);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CadastrarCampeoanto(CadastrarCampeonatoDTO campeonatoDto)
+        {
+            var result = await _campeonatoService.CadastrarCampeonato(campeonatoDto);
+
+            return ResultadoRetorno(result);
+        }
+
+        [Route("{id}")]
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CampeonatoViewModel))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> ObterCampeonatoPorId(long id)
+        {
+            var result = await _campeonatoService.ObterCampeonatoPorId(id);
+
+            return ResultadoRetorno(result);
+        }
+
+        [Route("faculdade/{faculdadeId}")]
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CampeonatoViewModel>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> ListarCampeonatosPorFaculdadeId(long faculdadeId)
+        {
+            var result = await _campeonatoService.ListarCampeonatosPorFaculdadeId(faculdadeId);
 
             return ResultadoRetorno(result);
         }

@@ -18,7 +18,7 @@ namespace Infrastructure.DataAccess.Mapping
 
             builder.HasOne(x => x.Gerente)
                 .WithOne(x => x.EquipeGerenciada)
-                .HasForeignKey<Usuario>(x => x.TimeGerenciadoId);
+                .HasForeignKey<Equipe>(x => x.GerenteId);
         }
     }
 }

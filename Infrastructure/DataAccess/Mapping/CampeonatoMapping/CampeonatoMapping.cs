@@ -29,6 +29,10 @@ namespace Infrastructure.DataAccess.Mapping.CampeonatoMapping
 
             builder.Property(x => x.DataInicio);
             builder.Property(x => x.DataFim);
+
+            builder.HasOne(x => x.Organizador)
+                .WithMany()
+                .HasForeignKey(x => x.OrganizadorId);
         }
     }
 }

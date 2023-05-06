@@ -1,7 +1,9 @@
 ﻿using Application.AuxiliaryClasses;
+using Application.DTO.CampeonatosDTO;
 using Application.Services.Interfaces;
 using Application.ViewModels.CampeonatosVm;
 using AutoMapper;
+using Domain.AggregateModels.CampeonatoModels;
 using Infrastructure.Repository.Interfaces;
 
 namespace Application.Services
@@ -41,6 +43,42 @@ namespace Application.Services
             var tiposVm = Mapper.Map<IEnumerable<TipoCampeonatoViewModel>>(tipos);
 
             return new Result<IEnumerable<TipoCampeonatoViewModel>>(tiposVm);
+        }
+
+        public async Task<Result<CampeonatoViewModel>> ObterCampeonatoPorId(long id)
+        {
+            var campeonato = await _campeonatoRepository.ObterCampeonatoPorId(id);
+
+            if (campeonato == null) { return new Result<CampeonatoViewModel>().AdicionarMensagemErro("Nenhum campeonato encontrado."); }
+
+            var campeonatoVm = Mapper.Map<CampeonatoViewModel>(campeonato);
+
+            return new Result<CampeonatoViewModel>(campeonatoVm);
+        }
+
+        public async Task<Result<IEnumerable<CampeonatoViewModel>>> ListarCampeonatosPorFaculdadeId(long faculdadeId)
+        {
+            var campeonatos = await _campeonatoRepository.ListarCampeonatosPorFaculdadeId(faculdadeId);
+
+            if (!campeonatos.Any())
+            {
+                return new Result<IEnumerable<CampeonatoViewModel>>().AdicionarMensagemErro("Nenhum campeonato encontrado");
+            }
+
+            var campeonatosVm = Mapper.Map<IEnumerable<CampeonatoViewModel>>(campeonatos);
+
+            return new Result<IEnumerable<CampeonatoViewModel>>(campeonatosVm);
+        }
+
+        public async Task<Result> CadastrarCampeonato(CadastrarCampeonatoDTO campeonatoDto)
+        {
+            var campeonato = new Campeonato(campeonatoDto.Nome, campeonatoDto.TipoId,
+                campeonatoDto.ModalidadeId, campeonatoDto.DataInicio, campeonatoDto.DataFim, campeonatoDto.OrganizadorId);
+
+            await _campeonatoRepository.CadastrarCampeonato(campeonato);
+            await _campeonatoRepository.UnitOfWork.SaveChangesAsync();
+
+            return new Result();
         }
     }
 }

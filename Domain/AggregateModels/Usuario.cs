@@ -3,7 +3,7 @@
 namespace Domain.AggregateModels
 {
     public class Usuario : IdentityUser<long>
-	{
+    {
         public string Nome { get; private set; }
         public string Sobrenome { get; private set; }
         public bool Ativo { get; private set; }
@@ -13,7 +13,6 @@ namespace Domain.AggregateModels
         public virtual ICollection<Perfil> UserRoles { get; private set; }
         public IEnumerable<EquipeUsuario> Equipes { get; private set; }
         public Equipe EquipeGerenciada { get; private set; }
-        public long? TimeGerenciadoId { get; private set; }
 
         public Usuario()
         {

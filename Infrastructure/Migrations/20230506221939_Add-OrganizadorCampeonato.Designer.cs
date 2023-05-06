@@ -4,6 +4,7 @@ using Infrastructure.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20230506221939_Add-OrganizadorCampeonato")]
+    partial class AddOrganizadorCampeonato
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -140,9 +142,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(80)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("GerenteId")
-                        .IsUnique();
 
                     b.ToTable("Equipe", (string)null);
                 });
@@ -289,6 +288,9 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(80)
                         .HasColumnType("nvarchar(80)");
 
+                    b.Property<long?>("TimeGerenciadoId")
+                        .HasColumnType("bigint");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -307,6 +309,10 @@ namespace Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("TimeGerenciadoId")
+                        .IsUnique()
+                        .HasFilter("[TimeGerenciadoId] IS NOT NULL");
 
                     b.ToTable("Usuario", (string)null);
                 });
@@ -449,17 +455,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("TipoCampeonato");
                 });
 
-            modelBuilder.Entity("Domain.AggregateModels.Equipe", b =>
-                {
-                    b.HasOne("Domain.AggregateModels.Usuario", "Gerente")
-                        .WithOne("EquipeGerenciada")
-                        .HasForeignKey("Domain.AggregateModels.Equipe", "GerenteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Gerente");
-                });
-
             modelBuilder.Entity("Domain.AggregateModels.EquipeUsuario", b =>
                 {
                     b.HasOne("Domain.AggregateModels.Equipe", "Equipe")
@@ -493,6 +488,12 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("FaculdadeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Domain.AggregateModels.Equipe", "EquipeGerenciada")
+                        .WithOne("Gerente")
+                        .HasForeignKey("Domain.AggregateModels.Usuario", "TimeGerenciadoId");
+
+                    b.Navigation("EquipeGerenciada");
 
                     b.Navigation("Faculdade");
                 });
@@ -550,14 +551,14 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.AggregateModels.Equipe", b =>
                 {
+                    b.Navigation("Gerente")
+                        .IsRequired();
+
                     b.Navigation("Jogadores");
                 });
 
             modelBuilder.Entity("Domain.AggregateModels.Usuario", b =>
                 {
-                    b.Navigation("EquipeGerenciada")
-                        .IsRequired();
-
                     b.Navigation("Equipes");
 
                     b.Navigation("UserRoles");
