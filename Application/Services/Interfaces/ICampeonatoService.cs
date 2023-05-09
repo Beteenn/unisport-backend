@@ -11,5 +11,6 @@ namespace Application.Services.Interfaces
         Task<Result> CadastrarCampeonato(CadastrarCampeonatoDTO campeonatoDto);
         Task<Result<CampeonatoViewModel>> ObterCampeonatoPorId(long id);
         Task<Result<IEnumerable<CampeonatoViewModel>>> ListarCampeonatosPorFaculdadeId(long faculdadeId);
+        Task<Result> IncreverEquipeNoCampeonato(InscreverEquipeNoCampeonatoDTO inscricaoDto);
     }
 }

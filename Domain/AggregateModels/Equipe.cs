@@ -1,4 +1,6 @@
-﻿namespace Domain.AggregateModels
+﻿using Domain.AggregateModels.CampeonatoModels;
+
+namespace Domain.AggregateModels
 {
     public class Equipe
     {
@@ -7,6 +9,7 @@
         public ICollection<EquipeUsuario> Jogadores { get; private set; }
         public Usuario Gerente { get; private set; }
         public long GerenteId{ get; private set; }
+        public ICollection<EquipeCampeonato> Campeonatos { get; private set; }
 
         public Equipe()
         {

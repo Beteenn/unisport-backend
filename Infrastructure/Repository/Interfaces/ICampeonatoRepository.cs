@@ -10,5 +10,6 @@ namespace Infrastructure.Repository.Interfaces
         Task AtualizarCampeonato(Campeonato campeonato);
         Task<Campeonato> ObterCampeonatoPorId(long id);
         Task<IEnumerable<Campeonato>> ListarCampeonatosPorFaculdadeId(long faculdadeId);
+        Task UpdateCampeonato(Campeonato campeonato);
     }
 }

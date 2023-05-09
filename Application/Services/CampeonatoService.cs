@@ -80,5 +80,19 @@ namespace Application.Services
 
             return new Result();
         }
+
+        public async Task<Result> IncreverEquipeNoCampeonato(InscreverEquipeNoCampeonatoDTO inscricaoDto)
+        {
+            var campeonato = await _campeonatoRepository.ObterCampeonatoPorId(inscricaoDto.CampeonatoId);
+
+            if (campeonato == null) { return new Result().AdicionarMensagemErro("Campeonato não encontrado."); }
+
+            campeonato.AdicionarEquipe(inscricaoDto.EquipeId);
+
+            await _campeonatoRepository.AtualizarCampeonato(campeonato);
+            await _campeonatoRepository.UnitOfWork.SaveChangesAsync();
+
+            return new Result();
+        }
     }
 }

@@ -69,5 +69,16 @@ namespace WebAPI.Controllers
 
             return ResultadoRetorno(result);
         }
+
+        [Route("inscrever")]
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> IncreverEquipeNoCampeonato(InscreverEquipeNoCampeonatoDTO inscricaoDto)
+        {
+            var result = await _campeonatoService.IncreverEquipeNoCampeonato(inscricaoDto);
+
+            return ResultadoRetorno(result);
+        }
     }
 }

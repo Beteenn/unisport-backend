@@ -14,8 +14,9 @@
         public DateTime DataFim { get; private set; }
         public long OrganizadorId { get; private set; }
         public Usuario Organizador { get; private set; }
+        public ICollection<EquipeCampeonato> Equipes { get; private set; }
 
-        public Campeonato() { }
+        public Campeonato() { Equipes = new List<EquipeCampeonato>(); }
 
         public Campeonato(string nome, int tipoId, int modalidadeId, DateTime dataInicio, DateTime dataFim, long organizadorId)
         {
@@ -26,6 +27,12 @@
             DataFim = dataFim;
             OrganizadorId = organizadorId;
             StatusCampeonatoId = 1;
+            Equipes = new List<EquipeCampeonato>();
+        }
+
+        public void AdicionarEquipe(long equipeId)
+        {
+            Equipes.Add(new EquipeCampeonato(equipeId));
         }
     }
 }

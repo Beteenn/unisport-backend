@@ -9,5 +9,6 @@
         public DateTime DataInicio { get; set; }
         public DateTime DataFim { get; set; }
         public UsuarioViewModel Organizador { get; set; }
+        public IEnumerable<EquipeViewModel> Equipes { get; set; }
     }
 }
