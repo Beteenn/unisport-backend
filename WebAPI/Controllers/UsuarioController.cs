@@ -37,6 +37,7 @@ namespace WebAPI.Controllers
             return ResultadoRetorno(result);
         }
 
+        [AllowAnonymous]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
