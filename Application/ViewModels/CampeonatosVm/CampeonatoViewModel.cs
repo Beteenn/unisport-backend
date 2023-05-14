@@ -6,9 +6,10 @@
         public string Nome { get; set; }
         public TipoCampeonatoViewModel TipoCampeonato { get; set; }
         public ModalidadeCampeonatoViewModel ModalidadeCampeonato { get; set; }
+        public StatusCampeonatoViewModel StatusCampeonato { get; set; }
         public DateTime DataInicio { get; set; }
         public DateTime DataFim { get; set; }
         public UsuarioViewModel Organizador { get; set; }
-        public IEnumerable<EquipeViewModel> Equipes { get; set; }
+        public InscricaoViewModel Inscricao { get; set; }
     }
 }

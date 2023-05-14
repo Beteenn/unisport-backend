@@ -9,7 +9,7 @@ namespace Domain.AggregateModels
         public ICollection<EquipeUsuario> Jogadores { get; private set; }
         public Usuario Gerente { get; private set; }
         public long GerenteId{ get; private set; }
-        public ICollection<EquipeCampeonato> Campeonatos { get; private set; }
+        public ICollection<EquipeInscricao> Campeonatos { get; private set; }
 
         public Equipe()
         {

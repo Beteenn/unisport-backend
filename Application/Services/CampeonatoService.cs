@@ -73,7 +73,8 @@ namespace Application.Services
         public async Task<Result> CadastrarCampeonato(CadastrarCampeonatoDTO campeonatoDto)
         {
             var campeonato = new Campeonato(campeonatoDto.Nome, campeonatoDto.TipoId,
-                campeonatoDto.ModalidadeId, campeonatoDto.DataInicio, campeonatoDto.DataFim, campeonatoDto.OrganizadorId);
+                campeonatoDto.ModalidadeId, campeonatoDto.DataInicio, campeonatoDto.DataFim,
+                campeonatoDto.OrganizadorId, campeonatoDto.DataInicioInscricao, campeonatoDto.DataFimInscricao);
 
             await _campeonatoRepository.CadastrarCampeonato(campeonato);
             await _campeonatoRepository.UnitOfWork.SaveChangesAsync();

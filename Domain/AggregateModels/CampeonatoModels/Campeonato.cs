@@ -14,11 +14,12 @@
         public DateTime DataFim { get; private set; }
         public long OrganizadorId { get; private set; }
         public Usuario Organizador { get; private set; }
-        public ICollection<EquipeCampeonato> Equipes { get; private set; }
+        public Inscricao Inscricao { get; private set; }
 
-        public Campeonato() { Equipes = new List<EquipeCampeonato>(); }
+        public Campeonato() { }
 
-        public Campeonato(string nome, int tipoId, int modalidadeId, DateTime dataInicio, DateTime dataFim, long organizadorId)
+        public Campeonato(string nome, int tipoId, int modalidadeId, DateTime dataInicio, DateTime dataFim,
+            long organizadorId, DateTime dataInicioInscricao, DateTime dataFimInscricao)
         {
             Nome = nome;
             TipoCampeonatoId = tipoId;
@@ -26,13 +27,24 @@
             DataInicio = dataInicio;
             DataFim = dataFim;
             OrganizadorId = organizadorId;
+            AdicionarStatusNovoCampeonato(dataInicioInscricao);
+            Inscricao = new Inscricao(dataInicioInscricao, dataFimInscricao);
+        }
+
+        private void AdicionarStatusNovoCampeonato(DateTime dataInicioInscricao)
+        {
+            if (DateTime.Now.Date >= dataInicioInscricao.Date)
+            {
+                StatusCampeonatoId = 2;
+                return;
+            }
+
             StatusCampeonatoId = 1;
-            Equipes = new List<EquipeCampeonato>();
         }
 
         public void AdicionarEquipe(long equipeId)
         {
-            Equipes.Add(new EquipeCampeonato(equipeId));
+            Inscricao.AdicionarEquipe(equipeId);
         }
     }
 }

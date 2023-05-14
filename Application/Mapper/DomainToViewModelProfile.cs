@@ -31,7 +31,13 @@ namespace Application.Mapper
             CreateMap<ModalidadeCampeonato, ModalidadeCampeonatoViewModel>()
                 .ReverseMap();
 
+            CreateMap<StatusCampeonato, StatusCampeonatoViewModel>()
+                .ReverseMap();
+
             CreateMap<Campeonato, CampeonatoViewModel>()
+                .ReverseMap();
+
+            CreateMap<Inscricao, InscricaoViewModel>()
                 .ForMember(dest => dest.Equipes, opt => opt.MapFrom(src => src.Equipes.Select(x => x.Equipe)))
                 .ReverseMap();
         }

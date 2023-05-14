@@ -36,7 +36,8 @@ namespace Infrastructure.Repository
                 .Include(x => x.StatusCampeonato)
                 .Include(x => x.ModalidadeCampeonato)
                 .Include(x => x.Organizador)
-                .Include(x => x.Equipes)
+                .Include(x => x.Inscricao)
+                    .ThenInclude(x => x.Equipes)
                 .Where(x => x.Organizador.FaculdadeId == faculdadeId)
                 .ToListAsync();
         }
@@ -48,7 +49,8 @@ namespace Infrastructure.Repository
                 .Include(x => x.StatusCampeonato)
                 .Include(x => x.ModalidadeCampeonato)
                 .Include(x => x.Organizador)
-                .Include(x => x.Equipes)
+                .Include(x => x.Inscricao)
+                    .ThenInclude(x => x.Equipes)
                     .ThenInclude(x => x.Equipe)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
