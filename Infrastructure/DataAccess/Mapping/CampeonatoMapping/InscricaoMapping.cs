@@ -1,4 +1,6 @@
 ﻿using Domain.AggregateModels.CampeonatoModels;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.DataAccess.Mapping.CampeonatoMapping
 {
@@ -13,8 +15,6 @@ namespace Infrastructure.DataAccess.Mapping.CampeonatoMapping
             builder.HasOne(x => x.Campeonato)
                 .WithOne(x => x.Inscricao)
                 .HasForeignKey<Inscricao>(x => x.CampeonatoId);
-
-
 
             builder.Property(x => x.DataInicio);
             builder.Property(x => x.DataFim);

@@ -56,9 +56,10 @@ namespace Application.Services
             return new Result<CampeonatoViewModel>(campeonatoVm);
         }
 
-        public async Task<Result<IEnumerable<CampeonatoViewModel>>> ListarCampeonatosPorFaculdadeId(long faculdadeId)
+        public async Task<Result<IEnumerable<CampeonatoViewModel>>> ListarCampeonatosPorFiltro(long? faculdadeId, int? tipoId,
+            int? modalidadeId, bool inscricoesAbertas)
         {
-            var campeonatos = await _campeonatoRepository.ListarCampeonatosPorFaculdadeId(faculdadeId);
+            var campeonatos = await _campeonatoRepository.ListarCampeonatosPorFiltro(faculdadeId, tipoId, modalidadeId, inscricoesAbertas);
 
             if (!campeonatos.Any())
             {

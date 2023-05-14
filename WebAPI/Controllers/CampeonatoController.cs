@@ -59,13 +59,12 @@ namespace WebAPI.Controllers
             return ResultadoRetorno(result);
         }
 
-        [Route("faculdade/{faculdadeId}")]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CampeonatoViewModel>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> ListarCampeonatosPorFaculdadeId(long faculdadeId)
+        public async Task<IActionResult> ListarCampeonatosPorFiltro(long? faculdadeId, int? tipoId, int? modalidadeId, bool inscricoesAbertas)
         {
-            var result = await _campeonatoService.ListarCampeonatosPorFaculdadeId(faculdadeId);
+            var result = await _campeonatoService.ListarCampeonatosPorFiltro(faculdadeId, tipoId, modalidadeId, inscricoesAbertas);
 
             return ResultadoRetorno(result);
         }

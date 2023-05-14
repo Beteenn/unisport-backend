@@ -1,4 +1,6 @@
 ﻿using Domain.AggregateModels.CampeonatoModels;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.DataAccess.Mapping.CampeonatoMapping
 {

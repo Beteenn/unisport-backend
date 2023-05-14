@@ -10,7 +10,8 @@ namespace Application.Services.Interfaces
         Task<Result<IEnumerable<TipoCampeonatoViewModel>>> ListarTiposCampeonato();
         Task<Result> CadastrarCampeonato(CadastrarCampeonatoDTO campeonatoDto);
         Task<Result<CampeonatoViewModel>> ObterCampeonatoPorId(long id);
-        Task<Result<IEnumerable<CampeonatoViewModel>>> ListarCampeonatosPorFaculdadeId(long faculdadeId);
+        Task<Result<IEnumerable<CampeonatoViewModel>>> ListarCampeonatosPorFiltro(long? faculdadeId, int? tipoId,
+            int? modalidadeId, bool inscricoesAbertas);
         Task<Result> IncreverEquipeNoCampeonato(InscreverEquipeNoCampeonatoDTO inscricaoDto);
     }
 }

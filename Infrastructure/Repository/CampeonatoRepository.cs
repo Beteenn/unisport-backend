@@ -29,17 +29,43 @@ namespace Infrastructure.Repository
             await Task.Run(() => _context.Update(campeonato));
         }
 
-        public async Task<IEnumerable<Campeonato>> ListarCampeonatosPorFaculdadeId(long faculdadeId)
+        public async Task<IEnumerable<Campeonato>> ListarCampeonatosPorFiltro(long? faculdadeId, int? tipoId,
+            int? modalidadeId, bool inscricoesAbertas)
         {
-            return await _context.Campeonato
+            var query = _context.Campeonato
                 .Include(x => x.TipoCampeonato)
                 .Include(x => x.StatusCampeonato)
                 .Include(x => x.ModalidadeCampeonato)
                 .Include(x => x.Organizador)
                 .Include(x => x.Inscricao)
                     .ThenInclude(x => x.Equipes)
-                .Where(x => x.Organizador.FaculdadeId == faculdadeId)
-                .ToListAsync();
+                .Where(x => x.Id > 0);
+
+            if (faculdadeId.HasValue)
+            {
+                query = query.Where(x => x.Organizador.FaculdadeId == faculdadeId.Value);
+            }
+
+            if (tipoId.HasValue)
+            {
+                query = query.Where(x => x.StatusCampeonatoId == tipoId.Value);
+            }
+
+            if (modalidadeId.HasValue)
+            {
+                query = query.Where(x => x.ModalidadeCampeonatoId == modalidadeId.Value);
+            }
+
+            if (inscricoesAbertas)
+            {
+                query = query.Where(x => DateTime.Now.Date < x.Inscricao.DataFim.Date);
+            }
+            else
+            {
+                query = query.Where(x => DateTime.Now.Date > x.Inscricao.DataFim.Date);
+            }
+
+            return await query.ToListAsync();
         }
 
         public async Task<Campeonato> ObterCampeonatoPorId(long id)

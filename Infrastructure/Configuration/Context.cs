@@ -3,6 +3,9 @@ using Domain.AggregateModels.CampeonatoModels;
 using Infrastructure.AuxiliaryClasses;
 using Infrastructure.DataAccess.Mapping;
 using Infrastructure.DataAccess.Mapping.CampeonatoMapping;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Configuration
 {
