@@ -13,18 +13,15 @@ namespace Application.Services
     public class UsuarioService : BaseService, IUsuarioService
     {
         private readonly ITokenService _tokenService;
-        private readonly IFaculdadeRepository _faculdadeRepository;
         private readonly IUsuarioRepository _usuarioRepository;
         //private readonly IIdentityServerLog _logger;
         private readonly UserManager<Usuario> _userManager;
 
         public UsuarioService(UserManager<Usuario> userManager, RoleManager<Perfil> roleManager, 
-            IUsuarioRepository usuarioRepository, ITokenService tokenService, IFaculdadeRepository faculdadeRepository,
-            IMapper mapper) : base(mapper) //IIdentityServerLog logger)
+            IUsuarioRepository usuarioRepository, ITokenService tokenService, IMapper mapper) : base(mapper) //IIdentityServerLog logger)
         {
             _userManager = userManager;
             _usuarioRepository = usuarioRepository ?? throw new ArgumentNullException(nameof(usuarioRepository));
-            _faculdadeRepository = faculdadeRepository ?? throw new ArgumentNullException(nameof(faculdadeRepository));
             _tokenService = tokenService ?? throw new ArgumentNullException(nameof(tokenService));
             //_logger = logger;
         }
@@ -35,13 +32,7 @@ namespace Application.Services
 
             if (usuarioExistente != null) { return new Result().AdicionarMensagemErro("Usuario já cadastrado!"); }
 
-            var dominioEmail = dto.Email.ToLower().Split('@')[1];
-
-            var faculdade = await _faculdadeRepository.ObterFaculdadePorDominioEmail(dominioEmail);
-
-            if (faculdade == null) { return new Result().AdicionarMensagemErro("Faculdade não encontrada."); }
-
-            var usuario = new Usuario(dto.Nome, dto.Sobrenome, dto.Email, faculdade.Id, dto.DataNascimento);
+            var usuario = new Usuario(dto.Nome, dto.Sobrenome, dto.Email, dto.DataNascimento);
 
             IdentityResult result = null;
 
@@ -74,17 +65,6 @@ namespace Application.Services
         public async Task<Result<IEnumerable<UsuarioListagemViewModel>>> ListarUsuarios()
         {
             var usuarios = await _usuarioRepository.ListarUsuarios();
-
-            if (!usuarios.Any()) { return new Result<IEnumerable<UsuarioListagemViewModel>>(); }
-
-            var usuariosVm = Mapper.Map<IEnumerable<UsuarioListagemViewModel>>(usuarios);
-
-            return new Result<IEnumerable<UsuarioListagemViewModel>>(usuariosVm);
-        }
-
-        public async Task<Result<IEnumerable<UsuarioListagemViewModel>>> ListarUsuariosPorFaculdadeId(long faculdadeId)
-        {
-            var usuarios = await _usuarioRepository.ListarUsuarioPorFaculdadeId(faculdadeId);
 
             if (!usuarios.Any()) { return new Result<IEnumerable<UsuarioListagemViewModel>>(); }
 

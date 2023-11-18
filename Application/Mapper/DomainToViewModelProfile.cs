@@ -10,9 +10,6 @@ namespace Application.Mapper
     {
         public DomainToViewModelProfile()
         {
-            CreateMap<Faculdade, FaculdadeViewModel>()
-                .ReverseMap();
-
             CreateMap<Usuario, UsuarioViewModel>()
                 .ReverseMap();
 

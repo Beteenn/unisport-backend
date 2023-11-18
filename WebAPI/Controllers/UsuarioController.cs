@@ -26,17 +26,6 @@ namespace WebAPI.Controllers
             return ResultadoRetorno(result);
         }
 
-        [Route("faculdade/{faculdadeId}")]
-        [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<UsuarioViewModel>), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> ListarUsuariosPorFaculdadeId(long faculdadeId)
-        {
-            var result = await _usuarioService.ListarUsuariosPorFaculdadeId(faculdadeId);
-
-            return ResultadoRetorno(result);
-        }
-
         [AllowAnonymous]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]

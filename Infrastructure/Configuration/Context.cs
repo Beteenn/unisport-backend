@@ -38,7 +38,6 @@ namespace Infrastructure.Configuration
             builder.Entity<IdentityUserRole<long>>().ToTable("UsuarioPerfilUsuario");
 
             builder.ApplyConfiguration(new UsuarioMapping());
-            builder.ApplyConfiguration(new FaculdadeMapping());
             builder.ApplyConfiguration(new EquipeMapping());
             builder.ApplyConfiguration(new EquipeUsuarioMapping());
             builder.ApplyConfiguration(new ModalidadeCampeonatoMapping());
@@ -58,7 +57,6 @@ namespace Infrastructure.Configuration
 
         public DbSet<Perfil> Perfil { get; set; }
         public DbSet<Usuario> Usuario { get; set; }
-        public DbSet<Faculdade> Faculdade { get; set; }
         public DbSet<Equipe> Equipe { get; set; }
         public DbSet<EquipeUsuario> EquipeUsuario { get; set; }
         public DbSet<TipoCampeonato> TipoCampeonato { get; set; }

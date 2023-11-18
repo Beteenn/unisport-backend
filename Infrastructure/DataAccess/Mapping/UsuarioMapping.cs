@@ -22,10 +22,6 @@ namespace Infrastructure.DataAccess.Mapping
                 .HasDefaultValue(false);
 
             builder.Property(x => x.DataNascimento);
-
-            builder.HasOne(x => x.Faculdade)
-                .WithMany()
-                .HasForeignKey(x => x.FaculdadeId);
         }
     }
 }

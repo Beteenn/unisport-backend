@@ -29,8 +29,8 @@ namespace Infrastructure.Repository
             await Task.Run(() => _context.Update(campeonato));
         }
 
-        public async Task<IEnumerable<Campeonato>> ListarCampeonatosPorFiltro(long? faculdadeId, int? tipoId,
-            int? modalidadeId, bool inscricoesAbertas)
+        public async Task<IEnumerable<Campeonato>> ListarCampeonatosPorFiltro(int? tipoId, int? modalidadeId,
+            bool inscricoesAbertas)
         {
             var query = _context.Campeonato
                 .Include(x => x.TipoCampeonato)
@@ -40,11 +40,6 @@ namespace Infrastructure.Repository
                 .Include(x => x.Inscricao)
                     .ThenInclude(x => x.Equipes)
                 .Where(x => x.Id > 0);
-
-            if (faculdadeId.HasValue)
-            {
-                query = query.Where(x => x.Organizador.FaculdadeId == faculdadeId.Value);
-            }
 
             if (tipoId.HasValue)
             {

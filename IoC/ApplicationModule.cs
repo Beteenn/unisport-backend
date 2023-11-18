@@ -36,7 +36,6 @@ namespace IoC
         private static void ConfigurarServices(this IServiceCollection services)
         {
             services.AddTransient<IUsuarioService, UsuarioService>();
-            services.AddScoped<IFaculdadeService, FaculdadeService>();
             services.AddScoped<IEquipeService, EquipeService>();
             services.AddScoped<ICampeonatoService, CampeonatoService>();
         }
@@ -45,7 +44,6 @@ namespace IoC
         {
             services.AddSingleton(typeof(IGenericsRepository<>), typeof(GenericsRepository<>));
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-            services.AddScoped<IFaculdadeRepository, FaculdadeRepository>();
             services.AddScoped<IEquipeRepository, EquipeRepository>();
             services.AddScoped<ICampeonatoRepository, CampeonatoRepository>();
         }

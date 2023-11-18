@@ -62,9 +62,9 @@ namespace WebAPI.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CampeonatoViewModel>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> ListarCampeonatosPorFiltro(long? faculdadeId, int? tipoId, int? modalidadeId, bool inscricoesAbertas)
+        public async Task<IActionResult> ListarCampeonatosPorFiltro(int? tipoId, int? modalidadeId, bool inscricoesAbertas)
         {
-            var result = await _campeonatoService.ListarCampeonatosPorFiltro(faculdadeId, tipoId, modalidadeId, inscricoesAbertas);
+            var result = await _campeonatoService.ListarCampeonatosPorFiltro(tipoId, modalidadeId, inscricoesAbertas);
 
             return ResultadoRetorno(result);
         }

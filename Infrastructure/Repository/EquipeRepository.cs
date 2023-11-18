@@ -29,7 +29,6 @@ namespace Infrastructure.Repository
                 .Include(x => x.Gerente)
                 .Include(x => x.Jogadores)
                     .ThenInclude(x => x.Usuario)
-                .Where(x => x.Gerente.FaculdadeId == faculdadeId)
                 .ToListAsync();
         }
     }

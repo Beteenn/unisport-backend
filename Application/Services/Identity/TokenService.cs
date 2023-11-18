@@ -56,7 +56,6 @@ namespace Application.Services.Identity
                 {
                     Id = user.Id,
                     Email = user.Email,
-                    FaculdadeId = user.FaculdadeId,
                     DataCriacao = dataCriacaoToken,
                     DataExpiracao = dataExpiracaoToken,
                     //Claims = user.Claims.Select(x => x.ClaimValue).ToList
@@ -105,7 +104,7 @@ namespace Application.Services.Identity
 
             if (string.IsNullOrEmpty(usuarioId)) return usuario;
 
-            usuario = new Usuario(long.Parse(usuarioId), email, long.Parse(faculdadeId));
+            usuario = new Usuario(long.Parse(usuarioId), email);
 
             PreencheUsuarioPrincipal(usuario, token);
 
@@ -122,7 +121,6 @@ namespace Application.Services.Identity
                 Subject = new ClaimsIdentity(new[] {
                     CriptografarClaim("id", user.Id.ToString()), //_servicoCriptografia),
                     CriptografarClaim("email", user.Email), //_servicoCriptografia),
-                    CriptografarClaim("faculdadeId", user.FaculdadeId.ToString()) //_servicoCriptografia),
                 }),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
                 Expires = DateTime.Now.AddMinutes(30),
@@ -144,7 +142,6 @@ namespace Application.Services.Identity
         {
             _usuarioPrincipal.SetId(usuario.Id);
             _usuarioPrincipal.SetEmail(usuario.Email);
-            _usuarioPrincipal.SetFaculdadeId(usuario.FaculdadeId);
             _usuarioPrincipal.AddRole(usuario.UserRoles?.FirstOrDefault().Name);
             //_usuarioPrincipal.SetStatusToken(usuario.TokenExpirado);
             //usuario.Claims.ForEach(x => _usuarioPrincipal.AddClaim(x));

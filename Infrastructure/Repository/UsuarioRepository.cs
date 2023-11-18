@@ -28,14 +28,6 @@ namespace Infrastructure.Repository
             return await _context.Usuario.FirstOrDefaultAsync(user => user.Email.Equals(email));
         }
 
-        public async Task<IEnumerable<Usuario>> ListarUsuarioPorFaculdadeId(long faculdadeId)
-        {
-            return await _context.Usuario
-                .Include(x => x.Faculdade)
-                .Where(x => x.FaculdadeId == faculdadeId && x.Ativo)
-                .ToListAsync();
-        }
-
         public async Task<Usuario> ListarUsuarioPorId(long id)
         {
             return await _context.Usuario.FirstOrDefaultAsync(x => x.Id == id && x.Ativo);
@@ -44,7 +36,6 @@ namespace Infrastructure.Repository
         public async Task<IEnumerable<Usuario>> ListarUsuarios()
         {
             return await _context.Usuario
-                .Include(x => x.Faculdade)
                 .Where(x => x.Ativo)
                 .ToListAsync();
         }
@@ -52,7 +43,6 @@ namespace Infrastructure.Repository
         public async Task<IEnumerable<Usuario>> ListarUsuariosPorIds(IEnumerable<long> usuariosId)
         {
             return await _context.Usuario
-                .Include(x => x.Faculdade)
                 .Where(x => usuariosId.Contains(x.Id) && x.Ativo)
                 .ToListAsync();
         }
