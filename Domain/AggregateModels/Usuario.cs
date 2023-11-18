@@ -4,8 +4,6 @@ namespace Domain.AggregateModels
 {
     public class Usuario : IdentityUser<long>
     {
-        public string Nome { get; private set; }
-        public string Sobrenome { get; private set; }
         public bool Ativo { get; private set; }
         public DateTime DataNascimento { get; private set; }
         public virtual ICollection<Perfil> UserRoles { get; private set; }
@@ -23,11 +21,9 @@ namespace Domain.AggregateModels
             Id = id;
         }
 
-        public Usuario(string nome, string sobrenome, string email, DateTime dataNascimento) : base()
+        public Usuario(string email, DateTime dataNascimento) : base()
         {
-            UserName = $"{nome}.{sobrenome}";
-            Nome = nome;
-            Sobrenome = sobrenome;
+            UserName = email;
             Email = email;
             DataNascimento = dataNascimento;
             Ativo = true;

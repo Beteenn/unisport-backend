@@ -14,7 +14,6 @@ namespace Application.Mapper
                 .ReverseMap();
 
             CreateMap<Usuario, UsuarioListagemViewModel>()
-                .ForMember(dest => dest.NomeCompleto, opt => opt.MapFrom(src => $"{src.Nome} {src.Sobrenome}"))
                 .ReverseMap();
 
             CreateMap<Equipe, EquipeViewModel>()

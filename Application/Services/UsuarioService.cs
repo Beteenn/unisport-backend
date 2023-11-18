@@ -32,7 +32,7 @@ namespace Application.Services
 
             if (usuarioExistente != null) { return new Result().AdicionarMensagemErro("Usuario já cadastrado!"); }
 
-            var usuario = new Usuario(dto.Nome, dto.Sobrenome, dto.Email, dto.DataNascimento);
+            var usuario = new Usuario(dto.Email, dto.DataNascimento);
 
             IdentityResult result = null;
 

@@ -12,12 +12,6 @@ namespace Infrastructure.DataAccess.Mapping
 
             builder.HasKey(x => x.Id);
 
-            builder.Property(x => x.Nome)
-                .HasMaxLength(80);
-
-            builder.Property(x => x.Sobrenome)
-                .HasMaxLength(80);
-
             builder.Property(x => x.Ativo)
                 .HasDefaultValue(false);
 

@@ -3,6 +3,6 @@
     public class UsuarioListagemViewModel
     {
         public long Id { get; set; }
-        public string NomeCompleto { get; set; }
+        public long Email { get; set; }
     }
 }
