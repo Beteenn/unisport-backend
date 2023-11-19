@@ -8,6 +8,6 @@ namespace Application.Services.Interfaces
     {
         Task<Result> CriarEquipe(CriarEquipeDTO equipeDto);
         Task<Result<EquipeViewModel>> ObterEquipePorId(long id);
-        Task<Result<IEnumerable<EquipeViewModel>>> ListarEquipesPorFaculdadeId(long faculdadeId);
+        Task<Result<IEnumerable<EquipeViewModel>>> ListarEquipes();
     }
 }

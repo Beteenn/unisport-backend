@@ -8,8 +8,6 @@ namespace Infrastructure.Auth
 
         public string Email { get; private set; }
 
-        public long FaculdadeId { get; private set;}
-
         public bool TokenValido { get; private set;}
 
         public ICollection<string> Roles { get; private set; }
@@ -28,8 +26,6 @@ namespace Infrastructure.Auth
         public void SetId(long id) => Id = id;
 
         public void SetEmail(string email) => Email = email;
-
-        public void SetFaculdadeId(long faculdadeId) => FaculdadeId = faculdadeId;
 
         public void SetStatusTokenInvalido(bool status) => TokenValido = status;
 

@@ -43,7 +43,7 @@ namespace Infrastructure.Repository
 
             if (tipoId.HasValue)
             {
-                query = query.Where(x => x.StatusCampeonatoId == tipoId.Value);
+                query = query.Where(x => x.TipoCampeonatoId == tipoId.Value);
             }
 
             if (modalidadeId.HasValue)

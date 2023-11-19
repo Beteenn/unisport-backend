@@ -6,6 +6,6 @@ namespace Infrastructure.Repository.Interfaces
     {
         Task CriarEquipe(Equipe equipe);
         Task<Equipe> ObterEquipePorId(long id);
-        Task<IEnumerable<Equipe>> ListarEquipesPorFaculdadeId(long faculdadeId);
+        Task<IEnumerable<Equipe>> ListarEquipes();
     }
 }

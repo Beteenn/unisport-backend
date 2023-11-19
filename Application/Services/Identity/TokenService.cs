@@ -99,7 +99,6 @@ namespace Application.Services.Identity
 
             var usuarioId = DescriptografarClaim("id", jwtToken.Claims); //_servicoCriptografia);
             var email = DescriptografarClaim("email", jwtToken.Claims); //_servicoCriptografia);
-            var faculdadeId = DescriptografarClaim("faculdadeId", jwtToken.Claims); //_servicoCriptografia);
             //var claims = DescriptografarListaClaims("claims", jwtToken.Claims, _servicoCriptografia);
 
             if (string.IsNullOrEmpty(usuarioId)) return usuario;

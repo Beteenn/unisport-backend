@@ -35,9 +35,9 @@ namespace Application.Services
             return new Result();
         }
 
-        public async Task<Result<IEnumerable<EquipeViewModel>>> ListarEquipesPorFaculdadeId(long faculdadeId)
+        public async Task<Result<IEnumerable<EquipeViewModel>>> ListarEquipes()
         {
-            var equipes = await _equipeRepository.ListarEquipesPorFaculdadeId(faculdadeId);
+            var equipes = await _equipeRepository.ListarEquipes();
 
             if (!equipes.Any())
             {

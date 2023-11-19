@@ -16,13 +16,12 @@ namespace WebAPI.Controllers
             _equipeService = equipeService;
         }
 
-        [Route("faculdade/{faculdadeId}")]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<EquipeViewModel>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> ListarEquipesPorFaculdadeId(long faculdadeId)
+        public async Task<IActionResult> ListarEquipes()
         {
-            var result = await _equipeService.ListarEquipesPorFaculdadeId(faculdadeId);
+            var result = await _equipeService.ListarEquipes();
 
             return ResultadoRetorno(result);
         }

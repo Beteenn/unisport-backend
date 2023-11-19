@@ -23,7 +23,7 @@ namespace Infrastructure.Repository
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<IEnumerable<Equipe>> ListarEquipesPorFaculdadeId(long faculdadeId)
+        public async Task<IEnumerable<Equipe>> ListarEquipes()
         {
             return await _context.Equipe
                 .Include(x => x.Gerente)
