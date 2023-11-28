@@ -5,6 +5,7 @@ using Application.Services.Interfaces;
 using Application.ViewModels;
 using AutoMapper;
 using Domain.AggregateModels;
+using Infrastructure.Auth;
 using Infrastructure.Repository.Interfaces;
 using Microsoft.AspNetCore.Identity;
 
@@ -12,17 +13,20 @@ namespace Application.Services
 {
     public class UsuarioService : BaseService, IUsuarioService
     {
+        private readonly IUsuarioPrincipal _usuarioPrincipal;
         private readonly ITokenService _tokenService;
         private readonly IUsuarioRepository _usuarioRepository;
         //private readonly IIdentityServerLog _logger;
         private readonly UserManager<Usuario> _userManager;
 
-        public UsuarioService(UserManager<Usuario> userManager, RoleManager<Perfil> roleManager, 
-            IUsuarioRepository usuarioRepository, ITokenService tokenService, IMapper mapper) : base(mapper) //IIdentityServerLog logger)
+        public UsuarioService(UserManager<Usuario> userManager, RoleManager<Perfil> roleManager,
+            IUsuarioRepository usuarioRepository, ITokenService tokenService, IMapper mapper,
+            IUsuarioPrincipal usuarioPrincipal) : base(mapper) //IIdentityServerLog logger)
         {
             _userManager = userManager;
             _usuarioRepository = usuarioRepository ?? throw new ArgumentNullException(nameof(usuarioRepository));
             _tokenService = tokenService ?? throw new ArgumentNullException(nameof(tokenService));
+            _usuarioPrincipal = usuarioPrincipal;
             //_logger = logger;
         }
 
@@ -60,6 +64,17 @@ namespace Application.Services
             var token = _tokenService.GerarToken(usuario);
 
             return new Result<LoginViewModel>(new LoginViewModel { Token = token });
+        }
+
+        public async Task<Result<UsuarioListagemViewModel>> ObterUsuarioLogado()
+        {
+            var usuarioVm = new UsuarioListagemViewModel
+            {
+                Id = _usuarioPrincipal.Id,
+                Email = _usuarioPrincipal.Email,
+            };
+
+            return new Result<UsuarioListagemViewModel>(usuarioVm);
         }
 
         public async Task<Result<IEnumerable<UsuarioListagemViewModel>>> ListarUsuarios()

@@ -17,6 +17,17 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(UsuarioViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Route("logado")]
+        public async Task<IActionResult> ObterUsuarioLogado()
+        {
+            var result = await _usuarioService.ObterUsuarioLogado();
+
+            return ResultadoRetorno(result);
+        }
+
+        [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<UsuarioViewModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> ListarUsuarios()
