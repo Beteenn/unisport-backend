@@ -4,17 +4,20 @@ using Application.Services.Interfaces;
 using Application.ViewModels.CampeonatosVm;
 using AutoMapper;
 using Domain.AggregateModels.CampeonatoModels;
+using Infrastructure.Auth;
 using Infrastructure.Repository.Interfaces;
 
 namespace Application.Services
 {
     public class CampeonatoService : BaseService, ICampeonatoService
     {
+        private readonly IUsuarioPrincipal _usuarioPrincipal;
         private readonly ICampeonatoRepository _campeonatoRepository;
 
-        public CampeonatoService(IMapper mapper, ICampeonatoRepository campeonatoRepository) : base(mapper)
+        public CampeonatoService(IMapper mapper, ICampeonatoRepository campeonatoRepository, IUsuarioPrincipal usuarioPrincipal) : base(mapper)
         {
             _campeonatoRepository = campeonatoRepository;
+            _usuarioPrincipal = usuarioPrincipal;
         }
 
         public async Task<Result<IEnumerable<ModalidadeCampeonatoViewModel>>> ListarModalidadesCampeonato()
@@ -75,7 +78,7 @@ namespace Application.Services
         {
             var campeonato = new Campeonato(campeonatoDto.Nome, campeonatoDto.TipoId,
                 campeonatoDto.ModalidadeId, campeonatoDto.DataInicio, campeonatoDto.DataFim,
-                campeonatoDto.OrganizadorId, campeonatoDto.DataInicioInscricao, campeonatoDto.DataFimInscricao);
+                _usuarioPrincipal.Id, campeonatoDto.DataInicioInscricao, campeonatoDto.DataFimInscricao);
 
             await _campeonatoRepository.CadastrarCampeonato(campeonato);
             await _campeonatoRepository.UnitOfWork.SaveChangesAsync();
