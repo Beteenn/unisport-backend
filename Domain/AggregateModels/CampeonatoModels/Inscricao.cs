@@ -21,5 +21,11 @@
         {
             Equipes.Add(new EquipeInscricao(equipeId));
         }
+
+        public void Atualizar(DateTime dataInicioInscricao, DateTime dataFimInscricao)
+        {
+            DataInicio = dataInicioInscricao;
+            DataFim = dataFimInscricao;
+        }
     }
 }

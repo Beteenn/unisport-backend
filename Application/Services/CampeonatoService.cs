@@ -83,6 +83,22 @@ namespace Application.Services
             return new Result();
         }
 
+        public async Task<Result> AtualizarCampeonato(AtualizarCampeonatoDTO campeonatoDto)
+        {
+            var campeonato = await _campeonatoRepository.ObterCampeonatoPorId(campeonatoDto.Id);
+
+            if (campeonato == null) { return new Result().AdicionarMensagemErro("Campeonato não encontrado."); }
+
+            campeonato.Atualizar(campeonatoDto.Nome, campeonatoDto.ModalidadeId, campeonatoDto.TipoId,
+                campeonatoDto.DataInicio, campeonatoDto.DataFim,
+                campeonatoDto.DataInicioInscricao, campeonatoDto.DataFimInscricao);
+
+            await _campeonatoRepository.AtualizarCampeonato(campeonato);
+            await _campeonatoRepository.UnitOfWork.SaveChangesAsync();
+
+            return new Result();
+        }
+
         public async Task<Result> IncreverEquipeNoCampeonato(InscreverEquipeNoCampeonatoDTO inscricaoDto)
         {
             var campeonato = await _campeonatoRepository.ObterCampeonatoPorId(inscricaoDto.CampeonatoId);

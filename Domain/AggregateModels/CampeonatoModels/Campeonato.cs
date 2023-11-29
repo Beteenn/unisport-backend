@@ -46,5 +46,16 @@
         {
             Inscricao.AdicionarEquipe(equipeId);
         }
+
+        public void Atualizar(string nome, int modalidadeId, int tipoId, DateTime dataInicio, DateTime dataFim,
+            DateTime dataInicioInscricao, DateTime dataFimInscricao)
+        {
+            Nome = nome;
+            ModalidadeCampeonatoId = modalidadeId;
+            TipoCampeonatoId = tipoId;
+            DataInicio = dataInicio;
+            DataFim = dataFim;
+            Inscricao.Atualizar(dataInicioInscricao, dataFimInscricao);
+        }
     }
 }

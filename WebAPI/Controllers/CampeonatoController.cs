@@ -69,6 +69,16 @@ namespace WebAPI.Controllers
             return ResultadoRetorno(result);
         }
 
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> AtualizarCampeonato(AtualizarCampeonatoDTO campeonatoDto)
+        {
+            var result = await _campeonatoService.AtualizarCampeonato(campeonatoDto);
+
+            return ResultadoRetorno(result);
+        }
+
         [Route("inscrever")]
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
