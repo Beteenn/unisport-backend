@@ -11,6 +11,6 @@ namespace Infrastructure.Repository.Interfaces
         Task<Campeonato> ObterCampeonatoPorId(long id);
         Task<IEnumerable<Campeonato>> ListarCampeonatosPorFiltro(int? tipoId, int? modalidadeId,
             bool inscricoesAbertas);
-        Task UpdateCampeonato(Campeonato campeonato);
+        Task DeletarCampeonato(Campeonato campeonato);
     }
 }

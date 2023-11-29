@@ -29,6 +29,11 @@ namespace Infrastructure.Repository
             await Task.Run(() => _context.Update(campeonato));
         }
 
+        public async Task DeletarCampeonato(Campeonato campeonato)
+        {
+            await Task.Run(() => _context.Remove(campeonato));
+        }
+
         public async Task<IEnumerable<Campeonato>> ListarCampeonatosPorFiltro(int? tipoId, int? modalidadeId,
             bool inscricoesAbertas)
         {
@@ -74,11 +79,6 @@ namespace Infrastructure.Repository
                     .ThenInclude(x => x.Equipes)
                     .ThenInclude(x => x.Equipe)
                 .FirstOrDefaultAsync(x => x.Id == id);
-        }
-
-        public async Task UpdateCampeonato(Campeonato campeonato)
-        {
-            await Task.Run(() => _context.Update(campeonato));
         }
     }
 }

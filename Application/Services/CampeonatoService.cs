@@ -112,5 +112,17 @@ namespace Application.Services
 
             return new Result();
         }
+
+        public async Task<Result> DeletarCampeonato(long id)
+        {
+            var campeonato = await _campeonatoRepository.ObterCampeonatoPorId(id);
+
+            if (campeonato == null) { return new Result().AdicionarMensagemErro("Campeonato não encontrado."); }
+
+            await _campeonatoRepository.DeletarCampeonato(campeonato);
+            await _campeonatoRepository.UnitOfWork.SaveChangesAsync();
+
+            return new Result();
+        }
     }
 }

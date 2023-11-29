@@ -89,5 +89,16 @@ namespace WebAPI.Controllers
 
             return ResultadoRetorno(result);
         }
+
+        [Route("{id}")]
+        [HttpDelete]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> DeletarCampeonao(long id)
+        {
+            var result = await _campeonatoService.DeletarCampeonato(id);
+
+            return ResultadoRetorno(result);
+        }
     }
 }

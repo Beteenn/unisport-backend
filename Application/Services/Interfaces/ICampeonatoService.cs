@@ -14,5 +14,6 @@ namespace Application.Services.Interfaces
         Task<Result<IEnumerable<CampeonatoViewModel>>> ListarCampeonatosPorFiltro(int? tipoId, int? modalidadeId,
             bool inscricoesAbertas);
         Task<Result> IncreverEquipeNoCampeonato(InscreverEquipeNoCampeonatoDTO inscricaoDto);
+        Task<Result> DeletarCampeonato(long id);
     }
 }
