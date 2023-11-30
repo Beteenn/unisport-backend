@@ -14,6 +14,11 @@ namespace Infrastructure.Repository
             await _context.AddAsync(equipe);
         }
 
+        public Task AtualizarEquipe(Equipe equipe)
+        {
+            return Task.Run(() => _context.Update(equipe));
+        }
+
         public async Task<Equipe> ObterEquipePorId(long id)
         {
             return await _context.Equipe

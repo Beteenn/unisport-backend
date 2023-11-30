@@ -9,5 +9,7 @@ namespace Application.Services.Interfaces
         Task<Result> CriarEquipe(CriarEquipeDTO equipeDto);
         Task<Result<EquipeViewModel>> ObterEquipePorId(long id);
         Task<Result<IEnumerable<EquipeViewModel>>> ListarEquipes();
+        Task<Result> AtualizaEquipe(AtualizaEquipeDTO equipeDto);
+        Task<Result> IngressarEquipe(IngressarEquipeDTO ingressoDto);
     }
 }

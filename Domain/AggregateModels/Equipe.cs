@@ -28,5 +28,14 @@ namespace Domain.AggregateModels
             Jogadores = jogadores.Select(x => new EquipeUsuario(x)).ToList();
         }
 
+        public void AdicionarJogador(long jogadorId)
+        {
+            Jogadores.Add(new EquipeUsuario(jogadorId));
+        }
+
+        public void AtualizarNome(string nome)
+        {
+            Nome = nome;
+        }
     }
 }

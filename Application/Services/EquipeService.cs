@@ -4,6 +4,7 @@ using Application.Services.Interfaces;
 using Application.ViewModels;
 using AutoMapper;
 using Domain.AggregateModels;
+using Infrastructure.Auth;
 using Infrastructure.Repository.Interfaces;
 
 namespace Application.Services
@@ -12,11 +13,14 @@ namespace Application.Services
     {
         private readonly IEquipeRepository _equipeRepository;
         private readonly IUsuarioRepository _usuarioRepository;
+        private readonly IUsuarioPrincipal _usuarioPrincipal;
 
-        public EquipeService(IMapper mapper, IEquipeRepository equipeRepository, IUsuarioRepository usuarioRepository) : base(mapper)
+        public EquipeService(IMapper mapper, IEquipeRepository equipeRepository,
+            IUsuarioRepository usuarioRepository, IUsuarioPrincipal usuarioPrincipal) : base(mapper)
         {
             _equipeRepository = equipeRepository;
             _usuarioRepository = usuarioRepository;
+            _usuarioPrincipal = usuarioPrincipal;
         }
 
         public async Task<Result> CriarEquipe(CriarEquipeDTO equipeDto)
@@ -63,6 +67,62 @@ namespace Application.Services
             var equipeVm = Mapper.Map<EquipeViewModel>(equipe);
 
             return new Result<EquipeViewModel>(equipeVm);
+        }
+
+        public async Task<Result> AtualizaEquipe(AtualizaEquipeDTO equipeDto)
+        {
+            var equipe = await _equipeRepository.ObterEquipePorId(equipeDto.Id);
+
+            if (equipe == null)
+            {
+                return new Result()
+                    .AdicionarMensagemErro("Equipe não encontrada.");
+            }
+
+            if (equipe.GerenteId != _usuarioPrincipal.Id)
+            {
+                return new Result()
+                    .AdicionarMensagemErro("Equipe não pertence ao usuario.");
+            }
+
+            equipe.AtualizarNome(equipeDto.Nome);
+
+            await _equipeRepository.AtualizarEquipe(equipe);
+            await _equipeRepository.UnitOfWork.SaveChangesAsync();
+
+            return new Result();
+        }
+
+        public async Task<Result> IngressarEquipe(IngressarEquipeDTO ingressoDto)
+        {
+            var equipe = await _equipeRepository.ObterEquipePorId(ingressoDto.EquipeId);
+
+            if (equipe == null)
+            {
+                return new Result()
+                    .AdicionarMensagemErro("Equipe não encontrada.");
+            }
+
+            var usuario = await _usuarioRepository.ListarUsuarioPorId(ingressoDto.UsuarioId);
+
+            if (usuario == null)
+            {
+                return new Result()
+                    .AdicionarMensagemErro("Usuario não encontrado.");
+            }
+
+            if (equipe.Jogadores.Any(x => x.UsuarioId == usuario.Id))
+            {
+                return new Result()
+                    .AdicionarMensagemErro("Jogador já pertence a equipe.");
+            }
+
+            equipe.AdicionarJogador(usuario.Id);
+
+            await _equipeRepository.AtualizarEquipe(equipe);
+            await _equipeRepository.UnitOfWork.SaveChangesAsync();
+
+            return new Result();
         }
     }
 }

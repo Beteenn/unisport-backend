@@ -46,5 +46,25 @@ namespace WebAPI.Controllers
 
             return ResultadoRetorno(result);
         }
+
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> AtualizaEquipe(AtualizaEquipeDTO equipeDto)
+        {
+            var result = await _equipeService.AtualizaEquipe(equipeDto);
+
+            return ResultadoRetorno(result);
+        }
+
+        [HttpPut("ingressar")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> IngressarEquipe(IngressarEquipeDTO ingressoDto)
+        {
+            var result = await _equipeService.IngressarEquipe(ingressoDto);
+
+            return ResultadoRetorno(result);
+        }
     }
 }
