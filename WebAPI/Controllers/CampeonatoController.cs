@@ -94,7 +94,7 @@ namespace WebAPI.Controllers
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> DeletarCampeonao(long id)
+        public async Task<IActionResult> DeletarCampeonato(long id)
         {
             var result = await _campeonatoService.DeletarCampeonato(id);
 

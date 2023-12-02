@@ -122,6 +122,11 @@ namespace Application.Services
 
             if (campeonato == null) { return new Result().AdicionarMensagemErro("Campeonato não encontrado."); }
 
+            if (campeonato.OrganizadorId == _usuarioPrincipal.Id)
+            {
+                return new Result().AdicionarMensagemErro("Campeonato não pertence ao usuário.");
+            }
+
             await _campeonatoRepository.DeletarCampeonato(campeonato);
             await _campeonatoRepository.UnitOfWork.SaveChangesAsync();
 
