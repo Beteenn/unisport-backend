@@ -1,4 +1,5 @@
 ﻿using Domain.AggregateModels;
+using Domain.AggregateModels.CampeonatoModels;
 using Infrastructure.Configuration;
 using Infrastructure.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -35,6 +36,11 @@ namespace Infrastructure.Repository
                 .Include(x => x.Jogadores)
                     .ThenInclude(x => x.Usuario)
                 .ToListAsync();
+        }
+
+        public async Task DeletarEquipe(Equipe equipe)
+        {
+            await Task.Run(() => _context.Remove(equipe));
         }
     }
 }

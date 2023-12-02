@@ -1,4 +1,5 @@
 ﻿using Application.DTO;
+using Application.Services;
 using Application.Services.Interfaces;
 using Application.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -63,6 +64,17 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> IngressarEquipe(IngressarEquipeDTO ingressoDto)
         {
             var result = await _equipeService.IngressarEquipe(ingressoDto);
+
+            return ResultadoRetorno(result);
+        }
+
+        [Route("{id}")]
+        [HttpDelete]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> DeletarEquipe(long id)
+        {
+            var result = await _equipeService.DeletarEquipe(id);
 
             return ResultadoRetorno(result);
         }

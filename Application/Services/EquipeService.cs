@@ -5,6 +5,7 @@ using Application.ViewModels;
 using AutoMapper;
 using Domain.AggregateModels;
 using Infrastructure.Auth;
+using Infrastructure.Repository;
 using Infrastructure.Repository.Interfaces;
 
 namespace Application.Services
@@ -25,7 +26,7 @@ namespace Application.Services
 
         public async Task<Result> CriarEquipe(CriarEquipeDTO equipeDto)
         {
-            var usuario = await _usuarioRepository.ListarUsuarioPorId(equipeDto.GerenteId);
+            var usuario = await _usuarioRepository.ListarUsuarioPorId(_usuarioPrincipal.Id);
 
             var equipe = new Equipe(usuario.Id, equipeDto.Nome);
 
@@ -120,6 +121,20 @@ namespace Application.Services
             equipe.AdicionarJogador(usuario.Id);
 
             await _equipeRepository.AtualizarEquipe(equipe);
+            await _equipeRepository.UnitOfWork.SaveChangesAsync();
+
+            return new Result();
+        }
+
+        public async Task<Result> DeletarEquipe(long id)
+        {
+            var equipe = await _equipeRepository.ObterEquipePorId(id);
+
+            if (equipe == null) { return new Result().AdicionarMensagemErro("Equipe não encontrada."); }
+
+            if (equipe.GerenteId != _usuarioPrincipal.Id) { return new Result().AdicionarMensagemErro("Equipe não pertence ao usuário."); }
+
+            await _equipeRepository.DeletarEquipe(equipe);
             await _equipeRepository.UnitOfWork.SaveChangesAsync();
 
             return new Result();

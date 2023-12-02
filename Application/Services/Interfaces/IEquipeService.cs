@@ -11,5 +11,6 @@ namespace Application.Services.Interfaces
         Task<Result<IEnumerable<EquipeViewModel>>> ListarEquipes();
         Task<Result> AtualizaEquipe(AtualizaEquipeDTO equipeDto);
         Task<Result> IngressarEquipe(IngressarEquipeDTO ingressoDto);
+        Task<Result> DeletarEquipe(long id);
     }
 }

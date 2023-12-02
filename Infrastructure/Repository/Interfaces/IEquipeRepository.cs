@@ -8,5 +8,6 @@ namespace Infrastructure.Repository.Interfaces
         Task AtualizarEquipe(Equipe equipe);
         Task<Equipe> ObterEquipePorId(long id);
         Task<IEnumerable<Equipe>> ListarEquipes();
+        Task DeletarEquipe(Equipe equipe);
     }
 }
