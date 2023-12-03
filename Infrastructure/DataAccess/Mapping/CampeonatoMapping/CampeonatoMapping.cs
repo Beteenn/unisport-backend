@@ -15,6 +15,8 @@ namespace Infrastructure.DataAccess.Mapping.CampeonatoMapping
                 .HasMaxLength(200)
                 .IsRequired();
 
+            builder.Property(x => x.QuantidadeRodadas);
+
             builder.HasOne(x => x.TipoCampeonato)
                 .WithMany()
                 .HasForeignKey(x => x.TipoCampeonatoId);

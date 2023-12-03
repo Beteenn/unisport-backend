@@ -36,6 +36,9 @@ namespace Application.Mapper
             CreateMap<Inscricao, InscricaoViewModel>()
                 .ForMember(dest => dest.Equipes, opt => opt.MapFrom(src => src.Equipes.Select(x => x.Equipe)))
                 .ReverseMap();
+
+            CreateMap<Partida, PartidaViewModel>()
+                .ReverseMap();
         }
     }
 }

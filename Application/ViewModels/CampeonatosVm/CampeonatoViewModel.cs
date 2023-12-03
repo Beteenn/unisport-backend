@@ -11,5 +11,6 @@
         public DateTime DataFim { get; set; }
         public UsuarioViewModel Organizador { get; set; }
         public InscricaoViewModel Inscricao { get; set; }
+        public List<PartidaViewModel> Partidas { get; set; }
     }
 }

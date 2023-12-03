@@ -46,6 +46,7 @@ namespace Infrastructure.Configuration
             builder.ApplyConfiguration(new CampeonatoMapping());
             builder.ApplyConfiguration(new EquipeInscricaoMapping());
             builder.ApplyConfiguration(new InscricaoMapping());
+            builder.ApplyConfiguration(new PartidaMapping());
         }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

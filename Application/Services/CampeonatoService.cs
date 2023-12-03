@@ -132,5 +132,18 @@ namespace Application.Services
 
             return new Result();
         }
+
+        public async Task<Result> GerarPartidasCampeonato(long id)
+        {
+            var campeonato = await _campeonatoRepository.ObterCampeonatoPorId(id);
+
+            if (campeonato == null) { return new Result().AdicionarMensagemErro("Campeonato não encontrado."); }
+
+            campeonato.GerarPartidas();
+            await _campeonatoRepository.AtualizarCampeonato(campeonato);
+            await _campeonatoRepository.UnitOfWork.SaveChangesAsync();
+
+            return new Result();
+        }
     }
 }

@@ -14,5 +14,10 @@
         {
             EquipeId = equipeId;
         }
+
+        public EquipeInscricao(Equipe equipe)
+        {
+            Equipe = equipe;
+        }
     }
 }

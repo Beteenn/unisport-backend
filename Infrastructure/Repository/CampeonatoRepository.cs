@@ -75,6 +75,8 @@ namespace Infrastructure.Repository
                 .Include(x => x.StatusCampeonato)
                 .Include(x => x.ModalidadeCampeonato)
                 .Include(x => x.Organizador)
+                .Include(x => x.Partidas)
+                    .ThenInclude(x => x.ProximaPartida)
                 .Include(x => x.Inscricao)
                     .ThenInclude(x => x.Equipes)
                     .ThenInclude(x => x.Equipe)

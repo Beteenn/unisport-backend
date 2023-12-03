@@ -100,5 +100,16 @@ namespace WebAPI.Controllers
 
             return ResultadoRetorno(result);
         }
+
+        [Route("gerar-partidas/{id}")]
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GerarPartidasCampeonato(long id)
+        {
+            var result = await _campeonatoService.GerarPartidasCampeonato(id);
+
+            return ResultadoRetorno(result);
+        }
     }
 }
