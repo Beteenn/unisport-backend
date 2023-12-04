@@ -8,7 +8,7 @@ namespace Domain.AggregateModels
         public DateTime DataNascimento { get; private set; }
         public virtual ICollection<Perfil> UserRoles { get; private set; }
         public IEnumerable<EquipeUsuario> Equipes { get; private set; }
-        public Equipe EquipeGerenciada { get; private set; }
+        public ICollection<Equipe> EquipesGerenciadas { get; private set; } = new List<Equipe>();
 
         public Usuario()
         {
@@ -41,7 +41,7 @@ namespace Domain.AggregateModels
         //    UserRoles = new List<Perfil>() { new Perfil(perfil) };
         //}
 
-        public void AdicionarEquipeGerenciada(Equipe equipe) => EquipeGerenciada = equipe;
+        public void AdicionarEquipeGerenciada(Equipe equipe) => EquipesGerenciadas.Add(equipe);
 
     }
 }

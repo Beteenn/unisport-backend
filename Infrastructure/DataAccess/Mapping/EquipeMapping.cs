@@ -17,8 +17,8 @@ namespace Infrastructure.DataAccess.Mapping
                 .IsRequired();
 
             builder.HasOne(x => x.Gerente)
-                .WithOne(x => x.EquipeGerenciada)
-                .HasForeignKey<Equipe>(x => x.GerenteId);
+                .WithMany(x => x.EquipesGerenciadas)
+                .HasForeignKey(x => x.GerenteId);
         }
     }
 }
