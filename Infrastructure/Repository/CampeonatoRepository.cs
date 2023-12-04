@@ -1,4 +1,5 @@
-﻿using Domain.AggregateModels.CampeonatoModels;
+﻿using Domain.AggregateModels;
+using Domain.AggregateModels.CampeonatoModels;
 using Infrastructure.Configuration;
 using Infrastructure.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +28,11 @@ namespace Infrastructure.Repository
         public async Task AtualizarCampeonato(Campeonato campeonato)
         {
             await Task.Run(() => _context.Update(campeonato));
+        }
+
+        public async Task AtualizarPartida(Partida partida)
+        {
+            await Task.Run(() => _context.Update(partida));
         }
 
         public async Task DeletarCampeonato(Campeonato campeonato)
@@ -80,6 +86,16 @@ namespace Infrastructure.Repository
                 .Include(x => x.Inscricao)
                     .ThenInclude(x => x.Equipes)
                     .ThenInclude(x => x.Equipe)
+                .FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<Partida> ObterPartidaPorId(long id)
+        {
+            return await _context.Partida
+                .Include(x => x.ProximaPartida)
+                .Include(x => x.EquipeA)
+                .Include(x => x.EquipeB)
+                .Include(x => x.EquipeVencedora)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
     }

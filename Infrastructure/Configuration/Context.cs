@@ -63,6 +63,7 @@ namespace Infrastructure.Configuration
         public DbSet<TipoCampeonato> TipoCampeonato { get; set; }
         public DbSet<ModalidadeCampeonato> ModalidadeCampeonato { get; set; }
         public DbSet<Campeonato> Campeonato { get; set; }
+        public DbSet<Partida> Partida { get; set; }
 
         #endregion
     }

@@ -111,5 +111,16 @@ namespace WebAPI.Controllers
 
             return ResultadoRetorno(result);
         }
+
+        [Route("partida/vencedor")]
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> DefinirVencedorPartida(DefinirVencedorPartidaDTO vencedorDto)
+        {
+            var result = await _campeonatoService.DefinirVencedorPartida(vencedorDto);
+
+            return ResultadoRetorno(result);
+        }
     }
 }

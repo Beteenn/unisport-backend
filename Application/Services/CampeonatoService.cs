@@ -145,5 +145,21 @@ namespace Application.Services
 
             return new Result();
         }
+
+        public async Task<Result> DefinirVencedorPartida(DefinirVencedorPartidaDTO vencedorDto)
+        {
+            var partida = await _campeonatoRepository.ObterPartidaPorId(vencedorDto.PartidaId);
+
+            if (partida == null) return new Result().AdicionarMensagemErro("Partida não encontrada");
+
+            if (partida.EquipeVencedora != null) return new Result().AdicionarMensagemErro("Partida já finalizada");
+
+            partida.DefinirVencedor(vencedorDto.EquipeId);
+
+            await _campeonatoRepository.AtualizarPartida(partida);
+            await _campeonatoRepository.UnitOfWork.SaveChangesAsync();
+
+            return new Result();
+        }
     }
 }

@@ -16,5 +16,6 @@ namespace Application.Services.Interfaces
         Task<Result> IncreverEquipeNoCampeonato(InscreverEquipeNoCampeonatoDTO inscricaoDto);
         Task<Result> DeletarCampeonato(long id);
         Task<Result> GerarPartidasCampeonato(long id);
+        Task<Result> DefinirVencedorPartida(DefinirVencedorPartidaDTO vencedorDto);
     }
 }

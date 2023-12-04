@@ -46,5 +46,22 @@ namespace Domain.AggregateModels
         {
             ProximaPartida = novaPartida;
         }
+
+        public void DefinirVencedor(int equipeId)
+        {
+            EquipeVencedoraId = equipeId;
+            ProximaPartida.DefinirEquipeParticipante(equipeId);
+        }
+
+        private void DefinirEquipeParticipante(int equipeId)
+        {
+            if (EquipeAId == null)
+            {
+                EquipeAId = equipeId;
+            } else if (EquipeBId == null)
+            {
+                EquipeBId = equipeId;
+            }
+        }
     }
 }
