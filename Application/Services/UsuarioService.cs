@@ -87,5 +87,23 @@ namespace Application.Services
 
             return new Result<IEnumerable<UsuarioListagemViewModel>>(usuariosVm);
         }
+
+        public async Task<Result<IEnumerable<EquipeViewModel>>> ListarEquipesGerenciadasUsuario()
+        {
+            var usuario = await _usuarioRepository.ListarUsuarioPorId(_usuarioPrincipal.Id);
+
+            var equipesVm = Mapper.Map<IEnumerable<EquipeViewModel>>(usuario.EquipesGerenciadas);
+
+            return new Result<IEnumerable<EquipeViewModel>>(equipesVm);
+        }
+
+        public async Task<Result<IEnumerable<EquipeViewModel>>> ListarEquipesUsuario()
+        {
+            var usuario = await _usuarioRepository.ListarUsuarioPorId(_usuarioPrincipal.Id);
+
+            var equipesVm = Mapper.Map<IEnumerable<EquipeViewModel>>(usuario.Equipes.Select(x => x.Equipe).ToList());
+
+            return new Result<IEnumerable<EquipeViewModel>>(equipesVm);
+        }
     }
 }

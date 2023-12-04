@@ -10,5 +10,7 @@ namespace Application.Services.Interfaces
         Task<Result<LoginViewModel>> Login(LoginDTO loginDto);
         Task<Result<UsuarioListagemViewModel>> ObterUsuarioLogado();
         Task<Result<IEnumerable<UsuarioListagemViewModel>>> ListarUsuarios();
+        Task<Result<IEnumerable<EquipeViewModel>>> ListarEquipesGerenciadasUsuario();
+        Task<Result<IEnumerable<EquipeViewModel>>> ListarEquipesUsuario();
     }
 }

@@ -30,7 +30,11 @@ namespace Infrastructure.Repository
 
         public async Task<Usuario> ListarUsuarioPorId(long id)
         {
-            return await _context.Usuario.FirstOrDefaultAsync(x => x.Id == id && x.Ativo);
+            return await _context.Usuario
+                .Include(x => x.EquipesGerenciadas)
+                .Include(x => x.Equipes)
+                    .ThenInclude(x => x.Equipe)
+                .FirstOrDefaultAsync(x => x.Id == id && x.Ativo);
         }
 
         public async Task<IEnumerable<Usuario>> ListarUsuarios()

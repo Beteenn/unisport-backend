@@ -58,5 +58,27 @@ namespace WebAPI.Controllers
 
             return ResultadoRetorno(result);
         }
+
+        [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<EquipeViewModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Route("equipes-gerenciadas")]
+        public async Task<IActionResult> ListarEquipesGerenciadasUsuario()
+        {
+            var result = await _usuarioService.ListarEquipesGerenciadasUsuario();
+
+            return ResultadoRetorno(result);
+        }
+
+        [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<EquipeViewModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Route("equipes")]
+        public async Task<IActionResult> ListarEquipesUsuario()
+        {
+            var result = await _usuarioService.ListarEquipesUsuario();
+
+            return ResultadoRetorno(result);
+        }
     }
 }
