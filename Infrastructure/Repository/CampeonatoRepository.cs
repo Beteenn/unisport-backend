@@ -65,7 +65,8 @@ namespace Infrastructure.Repository
 
             if (inscricoesAbertas)
             {
-                query = query.Where(x => DateTime.Now.Date <= x.Inscricao.DataFim.Date);
+                query = query.Where(x => DateTime.Now.Date >= x.Inscricao.DataInicio.Date &&
+                    DateTime.Now.Date <= x.Inscricao.DataFim.Date);
             }
             else
             {
