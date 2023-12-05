@@ -50,6 +50,7 @@ namespace Infrastructure.Repository
                 .Include(x => x.Organizador)
                 .Include(x => x.Inscricao)
                     .ThenInclude(x => x.Equipes)
+                        .ThenInclude(x => x.Equipe)
                 .Where(x => x.Id > 0);
 
             if (tipoId.HasValue)
@@ -64,7 +65,7 @@ namespace Infrastructure.Repository
 
             if (inscricoesAbertas)
             {
-                query = query.Where(x => DateTime.Now.Date < x.Inscricao.DataFim.Date);
+                query = query.Where(x => DateTime.Now.Date <= x.Inscricao.DataFim.Date);
             }
             else
             {
