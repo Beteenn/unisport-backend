@@ -84,7 +84,7 @@
 
                 for (int j = 0; j < quantidadePartidas; j++)
                 {
-                    var novaPartida = new Partida(i);
+                    var novaPartida = new Partida(i, CalcularProximoHorario(j + 1));
 
                     Partidas[j].AdicionarProximaPartida(novaPartida);
                     Partidas[j + 1].AdicionarProximaPartida(novaPartida);
@@ -99,7 +99,8 @@
         {
             for (int i = 0; i <= equipesEmbaralhadas.Count - 2; i += 2)
             {
-                var novaPartida = new Partida(equipesEmbaralhadas[i].Id, equipesEmbaralhadas[i + 1].Id);
+                var novaPartida = new Partida(equipesEmbaralhadas[i].Id,
+                    equipesEmbaralhadas[i + 1].Id, CalcularProximoHorario(i + 1));
                 Partidas.Add(novaPartida);
             }
         }

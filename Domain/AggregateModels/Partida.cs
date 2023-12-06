@@ -25,16 +25,20 @@ namespace Domain.AggregateModels
 
         public Partida() { }
 
-        public Partida(long equipeAId, long equipeBId)
+        public Partida(long equipeAId, long equipeBId, DateTime dataInicio)
         {
             EquipeAId = equipeAId;
             EquipeBId = equipeBId;
             Rodada = 1;
+            DataInicio = dataInicio;
+            DataFim = dataInicio.AddHours(1);
         }
 
-        public Partida(int rodada)
+        public Partida(int rodada, DateTime dataInicio)
         {
             Rodada = rodada;
+            DataInicio = dataInicio;
+            DataFim = dataInicio.AddHours(1);
         }
 
         public void AdicionarProximaPartida(long partidaId)
