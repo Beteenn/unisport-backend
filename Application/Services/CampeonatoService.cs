@@ -139,6 +139,11 @@ namespace Application.Services
 
             if (campeonato == null) { return new Result().AdicionarMensagemErro("Campeonato não encontrado."); }
 
+            if (!campeonato.Inscricao.Equipes.Any())
+            {
+                return new Result().AdicionarMensagemErro("O campeonato não possui equipes inscritas.");
+            }
+
             campeonato.GerarPartidas();
             await _campeonatoRepository.AtualizarCampeonato(campeonato);
             await _campeonatoRepository.UnitOfWork.SaveChangesAsync();
