@@ -9,6 +9,7 @@ namespace Domain.AggregateModels
         public virtual ICollection<Perfil> UserRoles { get; private set; }
         public IEnumerable<EquipeUsuario> Equipes { get; private set; }
         public ICollection<Equipe> EquipesGerenciadas { get; private set; } = new List<Equipe>();
+        public bool Admin { get; private set; }
 
         public Usuario()
         {
@@ -21,18 +22,20 @@ namespace Domain.AggregateModels
             Id = id;
         }
 
-        public Usuario(string email, DateTime dataNascimento) : base()
+        public Usuario(string email, DateTime dataNascimento, bool admin) : base()
         {
             UserName = email;
             Email = email;
             DataNascimento = dataNascimento;
             Ativo = true;
+            Admin = admin;
         }
 
-        public Usuario(long id, string email) : base()
+        public Usuario(long id, string email, bool admin) : base()
         {
             Id = id;
             Email = email;
+            Admin = admin;
         }
 
         //public Usuario(long id, string perfil)

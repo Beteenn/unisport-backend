@@ -6,6 +6,7 @@ namespace Infrastructure.Auth
     {
         long Id { get; }
         string Email { get; }
+        bool Admin { get; }
         bool TokenValido { get; }
         ICollection<string> Roles { get; }
 
@@ -15,5 +16,6 @@ namespace Infrastructure.Auth
         void SetId(long id);
         void SetEmail(string email);
         void SetStatusTokenInvalido(bool status);
+        void SetAdmin(bool admin);
     }
 }

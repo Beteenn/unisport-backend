@@ -15,6 +15,9 @@ namespace Infrastructure.DataAccess.Mapping
             builder.Property(x => x.Ativo)
                 .HasDefaultValue(false);
 
+            builder.Property(x => x.Admin)
+                .HasDefaultValue(false);
+
             builder.Property(x => x.DataNascimento);
         }
     }

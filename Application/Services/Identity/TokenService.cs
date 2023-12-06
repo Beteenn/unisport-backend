@@ -99,11 +99,12 @@ namespace Application.Services.Identity
 
             var usuarioId = DescriptografarClaim("id", jwtToken.Claims); //_servicoCriptografia);
             var email = DescriptografarClaim("email", jwtToken.Claims); //_servicoCriptografia);
+            var admin = DescriptografarClaim("admin", jwtToken.Claims); //_servicoCriptografia);
             //var claims = DescriptografarListaClaims("claims", jwtToken.Claims, _servicoCriptografia);
 
             if (string.IsNullOrEmpty(usuarioId)) return usuario;
 
-            usuario = new Usuario(long.Parse(usuarioId), email);
+            usuario = new Usuario(long.Parse(usuarioId), email, bool.Parse(admin));
 
             PreencheUsuarioPrincipal(usuario, token);
 
@@ -120,6 +121,7 @@ namespace Application.Services.Identity
                 Subject = new ClaimsIdentity(new[] {
                     CriptografarClaim("id", user.Id.ToString()), //_servicoCriptografia),
                     CriptografarClaim("email", user.Email), //_servicoCriptografia),
+                    CriptografarClaim("admin", user.Admin.ToString()), //_servicoCriptografia),
                 }),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
                 Expires = DateTime.Now.AddMinutes(30),
@@ -141,6 +143,7 @@ namespace Application.Services.Identity
         {
             _usuarioPrincipal.SetId(usuario.Id);
             _usuarioPrincipal.SetEmail(usuario.Email);
+            _usuarioPrincipal.SetAdmin(usuario.Admin);
             _usuarioPrincipal.AddRole(usuario.UserRoles?.FirstOrDefault().Name);
             //_usuarioPrincipal.SetStatusToken(usuario.TokenExpirado);
             //usuario.Claims.ForEach(x => _usuarioPrincipal.AddClaim(x));

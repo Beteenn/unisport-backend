@@ -36,7 +36,7 @@ namespace Application.Services
 
             if (usuarioExistente != null) { return new Result().AdicionarMensagemErro("Usuario já cadastrado!"); }
 
-            var usuario = new Usuario(dto.Email, dto.DataNascimento);
+            var usuario = new Usuario(dto.Email, dto.DataNascimento, dto.Admin);
 
             IdentityResult result = null;
 
@@ -72,6 +72,7 @@ namespace Application.Services
             {
                 Id = _usuarioPrincipal.Id,
                 Email = _usuarioPrincipal.Email,
+                Admin = _usuarioPrincipal.Admin
             };
 
             return new Result<UsuarioListagemViewModel>(usuarioVm);

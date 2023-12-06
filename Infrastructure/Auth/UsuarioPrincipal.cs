@@ -14,6 +14,8 @@ namespace Infrastructure.Auth
 
         public IIdentity? Identity { get; private set;}
 
+        public bool Admin { get; private set; }
+
         public bool IsInRole(string role)
         {
             throw new NotImplementedException();
@@ -35,6 +37,11 @@ namespace Infrastructure.Auth
 
             if (!Roles.Any(x => x == role))
                 Roles.Add(role);
+        }
+
+        public void SetAdmin(bool admin)
+        {
+            Admin = admin;
         }
     }
 }
