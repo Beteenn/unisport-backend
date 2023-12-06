@@ -88,6 +88,8 @@ namespace Infrastructure.Repository
                 .Include(x => x.Inscricao)
                     .ThenInclude(x => x.Equipes)
                     .ThenInclude(x => x.Equipe)
+                .Include(x => x.EquipeVencedora)
+                    .ThenInclude(x => x.Jogadores)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
@@ -98,6 +100,7 @@ namespace Infrastructure.Repository
                 .Include(x => x.EquipeA)
                 .Include(x => x.EquipeB)
                 .Include(x => x.EquipeVencedora)
+                .Include(x => x.Campeonato)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
     }

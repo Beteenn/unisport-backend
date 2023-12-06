@@ -54,7 +54,14 @@ namespace Domain.AggregateModels
         public void DefinirVencedor(int equipeId)
         {
             EquipeVencedoraId = equipeId;
-            ProximaPartida.DefinirEquipeParticipante(equipeId);
+
+            if (ProximaPartida != null)
+            {
+                ProximaPartida.DefinirEquipeParticipante(equipeId);
+                return;
+            }
+
+            Campeonato.DefinirVencedor(equipeId);
         }
 
         private void DefinirEquipeParticipante(int equipeId)

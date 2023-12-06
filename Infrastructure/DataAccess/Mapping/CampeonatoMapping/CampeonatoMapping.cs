@@ -35,6 +35,11 @@ namespace Infrastructure.DataAccess.Mapping.CampeonatoMapping
             builder.HasOne(x => x.Organizador)
                 .WithMany()
                 .HasForeignKey(x => x.OrganizadorId);
+
+            builder.HasOne(x => x.EquipeVencedora)
+                .WithMany()
+                .HasForeignKey(x => x.EquipeVencedoraId)
+                .IsRequired(false);
         }
     }
 }

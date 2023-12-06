@@ -12,5 +12,6 @@
         public UsuarioViewModel Organizador { get; set; }
         public InscricaoViewModel Inscricao { get; set; }
         public List<PartidaViewModel> Partidas { get; set; }
+        public EquipeViewModel EquipeVencedora { get; set; }
     }
 }

@@ -159,6 +159,9 @@ namespace Application.Services
 
             if (partida.EquipeVencedora != null) return new Result().AdicionarMensagemErro("Partida já finalizada");
 
+            if (partida.EquipeAId != vencedorDto.EquipeId && partida.EquipeBId != vencedorDto.EquipeId)
+                return new Result().AdicionarMensagemErro("Equipe não pertence a essa partida.");
+
             partida.DefinirVencedor(vencedorDto.EquipeId);
 
             await _campeonatoRepository.AtualizarPartida(partida);

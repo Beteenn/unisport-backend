@@ -17,6 +17,8 @@
         public Inscricao Inscricao { get; private set; }
         public List<Partida> Partidas { get; private set; }
         public int QuantidadeRodadas { get; private set; }
+        public Equipe EquipeVencedora { get; private set; }
+        public long? EquipeVencedoraId { get; private set; }
 
         public Campeonato() { }
 
@@ -141,6 +143,12 @@
             }
 
             return horarioPartida;
+        }
+
+        public void DefinirVencedor(int equipeId)
+        {
+            EquipeVencedoraId = equipeId;
+            StatusCampeonatoId = 4;
         }
     }
 }
